@@ -1,0 +1,22 @@
+{
+  "name": "cool_moon_music",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.3.11",
+    "vue-router": "^4.2.5"
+  },
+  "devDependencies": {
+    "@vicons/ionicons5": "^0.12.0",
+    "@vitejs/plugin-vue": "^4.5.2",
+    "less": "^4.2.0",
+    "naive-ui": "^2.37.3",
+    "vite": "^5.0.8"
+  }
+}
