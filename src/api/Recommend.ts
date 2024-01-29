@@ -7,5 +7,5 @@ export function getHotList() {
 }
 
 export function getPlayList(cat: string) {
-  return axios.get<Playlist>(`/api/top/playlist?limit=10&order=hot&cat=${cat}`);
+  return axios.get<Playlist>(`/api/top/playlist?limit=8&order=hot&cat=${cat}`);
 }

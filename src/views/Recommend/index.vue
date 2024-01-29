@@ -18,17 +18,23 @@
         :name="item.name"
         :tab="item.name"
       >
-        <div style="width: 90vw; overflow-x: auto; display: -webkit-box">
+        <div
+          style="
+            width: 90vw;
+            overflow-x: auto;
+            display: -webkit-box;
+          "
+        >
           <n-card
             v-for="item in playList"
             :key="item.id"
             :title="item.name"
-            style="height: 370px; width: 260px"
+            style="height: 390px; width: 250px"
           >
             <template #cover>
               <img
                 :src="item.coverImgUrl"
-                style="height: 240px; width: 240px"
+                style="height: 250px; width: 250px"
               />
             </template>
           </n-card>

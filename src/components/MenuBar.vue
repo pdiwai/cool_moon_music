@@ -1,11 +1,5 @@
 <template>
-  <div
-    style="
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    "
-  >
+  <div style="display: flex; align-items: center; max-width: 100vw">
     <n-menu
       mode="horizontal"
       :options="menuOptions"
