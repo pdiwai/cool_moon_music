@@ -1,5 +1,6 @@
 <template>
   <div style="width: 90vw; padding: 0 5% 0 5%">
+    <SecMenuBar></SecMenuBar>
     <n-carousel trigger="hover" style="width: 100%">
       <img class="carousel-img" src="../../assets/11.png" />
       <img class="carousel-img" src="../../assets/11.png" />
@@ -18,23 +19,32 @@
         :name="item.name"
         :tab="item.name"
       >
-        <div
-          style="
-            width: 90vw;
-            overflow-x: auto;
-            display: -webkit-box;
-          "
-        >
+        <div style="width: 90vw; overflow-x: auto; display: -webkit-box">
           <n-card
             v-for="item in playList"
             :key="item.id"
             :title="item.name"
-            style="height: 390px; width: 250px"
+            :hoverable="true"
+            :bordered="false"
+            style="height: 380px; width: 280px; margin: 0px 10px 0px 10px"
+            @click="
+              () => {
+                $router.push({
+                  path: '/playListDetail',
+                  query: { id: item.id },
+                });
+              }
+            "
           >
             <template #cover>
               <img
                 :src="item.coverImgUrl"
-                style="height: 250px; width: 250px"
+                style="
+                  height: 250px;
+                  width: 250px;
+                  margin-left: 5%;
+                  margin-top: 5%;
+                "
               />
             </template>
           </n-card>
@@ -49,6 +59,7 @@ import { getHotList, getPlayList } from "../../api/Recommend";
 import { Hotlist, Playlist, Playlists } from "../../type/Recommend";
 import { ref } from "vue";
 import { ListVo } from "../../type/currency";
+import SecMenuBar from "../../components/SecMenuBar.vue";
 
 const hotTypeList = ref<Array<Hotlist>>([]);
 const playList = ref<Array<Playlists>>([]);

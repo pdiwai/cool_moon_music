@@ -71,7 +71,7 @@ export interface Playlists {
   trackCount: number;
   trackNumberUpdateTime: number;
   trackUpdateTime: number;
-  tracks: string;
+  tracks: Array<Tracks>;
   updateTime: number;
   userId: number;
 }
@@ -144,4 +144,78 @@ export interface AvatarDetail {
   identityIconUrl: string;
   identityLevel: number;
   userType: number;
+}
+
+export interface Tracks {
+  a: string;
+  al: Al;
+  alia: Array<string>;
+  ar: Array<AR>;
+  awardTags: any;
+  cd: string;
+  cf: string;
+  copyright: number;
+  cp: number;
+  crbt: any;
+  djId: number;
+  dt: number;
+  entertainmentTags: any;
+  fee: number;
+  ftype: number;
+  h: BrFidSizeVdSr;
+  hr: any;
+  id: number;
+  l: BrFidSizeVdSr;
+  m: BrFidSizeVdSr;
+  mark: number;
+  mst: number;
+  mv: number;
+  name: string;
+  no: number;
+  noCopyrightRcmd: string;
+  originCoverType: number;
+  originSongSimpleData: string;
+  pop: number;
+  pst: number;
+  publishTime: number;
+  resourceState: boolean;
+  rt: string;
+  rtUrl: string;
+  rtUrls: Array<string>;
+  rtype: number;
+  rurl: string;
+  s_id: number;
+  single: number;
+  songJumpInfo: any;
+  sq: BrFidSizeVdSr;
+  st: number;
+  t: number;
+  tagPicList: any;
+  v: number;
+  version: number;
+  videoInfo: VideoInfo;
+}
+
+export interface BrFidSizeVdSr {
+  br: number;
+  fid: number;
+  size: number;
+  vd: number;
+  sr: number;
+}
+export interface Al {
+  id: number;
+  name: string;
+  pic: number;
+  picUrl: string;
+}
+export interface AR {
+  alias: Array<string>;
+  id: number;
+  name: string;
+  tns: Array<string>;
+}
+export interface VideoInfo {
+  moreThanOne: boolean;
+  video: string;
 }
