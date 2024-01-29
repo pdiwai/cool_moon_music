@@ -43,9 +43,50 @@
             round
             strong
           >
-            <n-icon size="30">
+            <n-icon size="25">
               <CaretForwardCircleOutline /> </n-icon
-            >&nbsp;&nbsp;播放全部
+            >&nbsp;播放全部
+          </n-button>
+
+          <n-button
+            size="large"
+            round
+            strong
+            style="margin-left: 20px;"
+          >
+            <n-icon size="25">
+              <AddSharp /> </n-icon
+            >&nbsp;添加
+          </n-button>
+          <n-button
+            size="large"
+            round
+            strong
+            style="margin-left: 20px;"
+          >
+            <n-icon size="25">
+              <HeartOutline /> </n-icon
+            >&nbsp;收藏
+          </n-button>
+          <n-button
+            size="large"
+            round
+            strong
+            style="margin-left: 20px;"
+          >
+            <n-icon size="25">
+              <ShareOutline /> </n-icon
+            >&nbsp;分享
+          </n-button>
+          <n-button
+            size="large"
+            round
+            strong
+            style="margin-left: 20px;"
+          >
+            <n-icon size="25">
+              <LogoTwitch /> </n-icon
+            >&nbsp;评论
           </n-button>
         </div>
         <n-table striped style="margin-top: 20px">
@@ -66,7 +107,7 @@
                 {{
                   String((item.dt / 60000) | 0) +
                   ":" +
-                  String((item.dt / 1000) % 60 | 0)
+                  String(((item.dt / 1000) % 60 | 0))
                 }}
               </td>
             </tr>
@@ -84,7 +125,7 @@ import { ref } from "vue";
 import { Tracks } from "../../type/Recommend";
 import { PlayListDetail } from "../../type/playListDetail";
 import { NTable, NGrid, NGi, NAvatar, NButton,NIcon } from "naive-ui";
-import { CaretForwardCircleOutline } from "@vicons/ionicons5";
+import { CaretForwardCircleOutline,AddSharp,HeartOutline,ShareOutline ,LogoTwitch} from "@vicons/ionicons5";
 
 const { currentRoute } = useRouter();
 const musicList = ref<Array<Tracks>>([]);
