@@ -72,9 +72,14 @@
               <td>{{ index + 1 }}</td>
               <td>
                 <a
-                  style="color: black"
+                  :style="{
+                    color:
+                      index === currentSong.index && songUrl !== ''
+                        ? ''
+                        : 'black',
+                  }"
                   href="#"
-                  @click.prevent="clickMusic(item.id)"
+                  @click.prevent="clickMusic(item.id, index)"
                   >{{ item.name + "-" + item.al.name }}</a
                 >
               </td>
@@ -91,91 +96,91 @@
         </n-table>
       </n-gi>
     </n-grid>
-    <div
-      style="
-        width: 90%;
-        background-color: #ffe12c;
-        z-index: 100;
-        position: fixed;
-        bottom: 0;
-        border-radius: 5%;
-        display: flex;
-        align-items: center;
-      "
-    >
-      <n-button
-        size="large"
-        circle
-        strong
-        quaternary
-        style="margin-left: 20px; width: 36px; height: 36px"
-        @click=""
-      >
-        <n-icon size="22"> <PlaySkipBack /></n-icon
-      ></n-button>
-      <n-button
-        size="large"
-        circle
-        strong
-        quaternary
-        style="
-          margin-left: 20px;
-          border: 1.5px solid black;
-          width: 36px;
-          height: 36px;
-        "
-        @click="musicStart"
-      >
-        <n-icon size="22">
-          <Pause v-if="isPlay" />
-          <Play v-else /> </n-icon
-      ></n-button>
-      <n-button
-        size="large"
-        circle
-        strong
-        quaternary
-        style="margin-left: 20px; width: 36px; height: 36px"
-        @click=""
-      >
-        <n-icon size="22"> <PlaySkipForward /></n-icon
-      ></n-button>
+    <!-- 播放器部分 -->
 
-      <audio
-        ref="audioRef"
-        controls
-        autoplay
-        :src="songUrl"
-        @ended="musicEnded"
-      ></audio>
-      <n-button
-        size="large"
-        circle
-        strong
-        quaternary
-        style="
-          margin-left: 20px;
-          border: 1px dashed black;
-          width: 28px;
-          height: 28px;
-        "
-        @click="
-          playType =
-            playType === 'radom'
-              ? 'list'
-              : playType === 'list'
-              ? 'cycle'
-              : playType === 'cycle'
-              ? 'radom'
-              : 'cycle'
-        "
-      >
-        <n-icon size="15">
-          <ShuffleOutline v-if="playType === 'radom'" />
-          <List v-if="playType === 'list'" />
-          <Repeat v-if="playType === 'cycle'" />
-        </n-icon>
-      </n-button>
+    <div class="audioDiv">
+      <div class="audioDiv-text">
+        {{
+          currentSong.name
+            ? currentSong.name + "-" + currentSong.nickname
+            : "暂无播放"
+        }}
+      </div>
+      <div class="audioDiv-audio">
+        <n-button
+          size="large"
+          circle
+          strong
+          quaternary
+          style="margin-left: 20px; width: 36px; height: 36px"
+          @click=""
+        >
+          <n-icon size="22"> <PlaySkipBack /></n-icon
+        ></n-button>
+        <n-button
+          size="large"
+          circle
+          strong
+          quaternary
+          style="
+            margin-left: 20px;
+            border: 1.5px solid black;
+            width: 36px;
+            height: 36px;
+          "
+          @click="musicPlayOrPause"
+        >
+          <n-icon size="22">
+            <Pause v-if="isPlay" />
+            <Play v-else /> </n-icon
+        ></n-button>
+        <n-button
+          size="large"
+          circle
+          strong
+          quaternary
+          style="margin-left: 20px; width: 36px; height: 36px"
+          @click="nextMusic"
+        >
+          <n-icon size="22"> <PlaySkipForward /></n-icon
+        ></n-button>
+
+        <audio
+          ref="audioRef"
+          controls
+          autoplay
+          :src="songUrl"
+          @ended="nextMusic"
+        ></audio>
+        <n-button
+          size="large"
+          circle
+          strong
+          quaternary
+          style="
+            margin-left: 20px;
+            border: 1px dashed black;
+            width: 28px;
+            height: 28px;
+          "
+          @click="
+            playType =
+              playType === 'radom'
+                ? 'list'
+                : playType === 'list'
+                ? 'cycle'
+                : playType === 'cycle'
+                ? 'radom'
+                : 'cycle'
+          "
+        >
+          <n-icon size="15">
+            <ShuffleOutline v-if="playType === 'radom'" />
+            <List v-if="playType === 'list'" />
+            <Repeat v-if="playType === 'cycle'" />
+          </n-icon>
+        </n-button>
+      </div>
     </div>
   </div>
 </template>
@@ -205,8 +210,12 @@ const { currentRoute } = useRouter();
 const musicList = ref<Array<Tracks>>([]);
 const songUrl = ref<string>("");
 // 播放方式
-const playType = ref<string>("radom");
-const currentIndex = ref<number>(0);
+const playType = ref<string>("list");
+const currentSong = ref<{ index: number; name: string; nickname: string }>({
+  index: 0,
+  name: "",
+  nickname: "",
+});
 const isPlay = ref<boolean>(false);
 const audioRef = ref();
 const neededInfo = ref<{
@@ -235,37 +244,48 @@ const getPlayDetail = () => {
   });
 };
 
-const clickMusic = (id: number) => {
+const clickMusic = (id: number, index: number) => {
   getSongUrl(id).then((res) => {
     songUrl.value = res.data.data[0].url;
   });
+  currentSong.value.index = index;
+  currentSong.value.name = musicList.value[currentSong.value.index].name;
+  currentSong.value.nickname =
+    musicList.value[currentSong.value.index].ar[0].name;
 };
 
 // 播放全部 从第一首开始播放
 const playAll = () => {
-  currentIndex.value = 0;
+  currentSong.value.index = 0;
+  currentSong.value.name = musicList.value[currentSong.value.index].name;
+  currentSong.value.nickname =
+    musicList.value[currentSong.value.index].ar[0].name;
   getSongUrl(musicList.value[0].id).then((res) => {
     songUrl.value = res.data.data[0].url;
   });
 };
 
-const musicEnded = () => {
+const nextMusic = () => {
   switch (playType.value) {
     case "radom":
-      getSongUrl(
-        musicList.value[Math.floor(Math.random() * musicList.value.length)].id
-      ).then((res) => {
+      currentSong.value.index = Math.floor(
+        Math.random() * musicList.value.length
+      );
+      getSongUrl(musicList.value[currentSong.value.index].id).then((res) => {
         songUrl.value = res.data.data[0].url;
       });
       break;
     case "list":
-      currentIndex.value += 1;
-      getSongUrl(musicList.value[currentIndex.value].id).then((res) => {
+      currentSong.value.index =
+        songUrl.value !== ""
+          ? currentSong.value.index + 1
+          : currentSong.value.index;
+      getSongUrl(musicList.value[currentSong.value.index].id).then((res) => {
         songUrl.value = res.data.data[0].url;
       });
       break;
     case "cycle":
-      getSongUrl(musicList.value[currentIndex.value].id).then((res) => {
+      getSongUrl(musicList.value[currentSong.value.index].id).then((res) => {
         songUrl.value = res.data.data[0].url;
       });
       break;
@@ -273,15 +293,19 @@ const musicEnded = () => {
     default:
       break;
   }
+  currentSong.value.name = musicList.value[currentSong.value.index].name;
+  currentSong.value.nickname =
+    musicList.value[currentSong.value.index].ar[0].name;
+  console.log(musicList.value[currentSong.value.index].name);
 };
 
-const musicStart = () => {
+const musicPlayOrPause = () => {
   isPlay.value = !isPlay.value;
   if (isPlay.value) {
     if (songUrl.value !== "") {
       audioRef.value.play();
     } else {
-      musicEnded();
+      nextMusic();
     }
   } else {
     audioRef.value.pause();
@@ -291,7 +315,7 @@ const musicStart = () => {
 getPlayDetail();
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 &::-webkit-media-controls-enclosure {
   background-color: transparent;
 }
@@ -301,5 +325,24 @@ audio::-webkit-media-controls-play-button {
 audio {
   width: 40%;
   height: 45px;
+}
+
+.audioDiv {
+  width: 90%;
+  background-color: #ffe12c;
+  z-index: 100;
+  position: fixed;
+  bottom: 0;
+  border-radius: 5%;
+
+  &-text {
+    display: flex;
+    margin-left: 30px;
+  }
+
+  &-audio {
+    display: flex;
+    align-items: center;
+  }
 }
 </style>
