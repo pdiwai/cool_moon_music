@@ -4,7 +4,7 @@
       <n-gi>
         <img
           :src="neededInfo.coverImgUrl"
-          style="height: 350px; width: 350px"
+          style="height: 40vh; width: 20vw"
         />
         <div
           style="
