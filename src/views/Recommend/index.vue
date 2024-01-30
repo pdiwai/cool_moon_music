@@ -56,9 +56,8 @@
 <script lang="ts" setup>
 import { NCarousel, NTabs, NTabPane, NCard } from "naive-ui";
 import { getHotList, getPlayList } from "../../api/Recommend";
-import { Hotlist, Playlist, Playlists } from "../../type/Recommend";
+import { Hotlist, Playlists } from "../../type/Recommend";
 import { ref } from "vue";
-import { ListVo } from "../../type/currency";
 import SecMenuBar from "../../components/SecMenuBar.vue";
 
 const hotTypeList = ref<Array<Hotlist>>([]);
@@ -66,16 +65,14 @@ const playList = ref<Array<Playlists>>([]);
 const currentTab = ref<string>("华语");
 const getHotTypeList = () => {
   getHotList().then((res) => {
-    const listVo = res.data as unknown as ListVo<Hotlist>;
-    hotTypeList.value = listVo.tags;
+    hotTypeList.value = res.data.tags;
     currentTab.value = hotTypeList.value[0].name;
   });
 };
 
 const getPlay = () => {
   getPlayList(currentTab.value).then((res) => {
-    const listVo = res.data as unknown as Playlist;
-    playList.value = listVo.playlists;
+    playList.value = res.data.playlists;
   });
 };
 

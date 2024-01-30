@@ -2,10 +2,7 @@
   <div style="width: 90vw; padding: 5vh 5% 0 5%">
     <n-grid x-gap="80" :cols="4">
       <n-gi>
-        <img
-          :src="neededInfo.coverImgUrl"
-          style="height: 40vh; width: 20vw"
-        />
+        <img :src="neededInfo.coverImgUrl" style="height: 40vh; width: 20vw" />
         <div
           style="
             font-size: 25px;
@@ -43,50 +40,21 @@
             round
             strong
           >
-            <n-icon size="25">
-              <CaretForwardCircleOutline /> </n-icon
+            <n-icon size="25"> <CaretForwardCircleOutline /> </n-icon
             >&nbsp;播放全部
           </n-button>
 
-          <n-button
-            size="large"
-            round
-            strong
-            style="margin-left: 20px;"
-          >
-            <n-icon size="25">
-              <AddSharp /> </n-icon
-            >&nbsp;添加
+          <n-button size="large" round strong style="margin-left: 20px">
+            <n-icon size="25"> <AddSharp /> </n-icon>&nbsp;添加
           </n-button>
-          <n-button
-            size="large"
-            round
-            strong
-            style="margin-left: 20px;"
-          >
-            <n-icon size="25">
-              <HeartOutline /> </n-icon
-            >&nbsp;收藏
+          <n-button size="large" round strong style="margin-left: 20px">
+            <n-icon size="25"> <HeartOutline /> </n-icon>&nbsp;收藏
           </n-button>
-          <n-button
-            size="large"
-            round
-            strong
-            style="margin-left: 20px;"
-          >
-            <n-icon size="25">
-              <ShareOutline /> </n-icon
-            >&nbsp;分享
+          <n-button size="large" round strong style="margin-left: 20px">
+            <n-icon size="25"> <ShareOutline /> </n-icon>&nbsp;分享
           </n-button>
-          <n-button
-            size="large"
-            round
-            strong
-            style="margin-left: 20px;"
-          >
-            <n-icon size="25">
-              <LogoTwitch /> </n-icon
-            >&nbsp;评论
+          <n-button size="large" round strong style="margin-left: 20px">
+            <n-icon size="25"> <LogoTwitch /> </n-icon>&nbsp;评论
           </n-button>
         </div>
         <n-table striped style="margin-top: 20px">
@@ -101,13 +69,20 @@
           <tbody>
             <tr v-for="(item, index) in musicList" :key="item.id">
               <td>{{ index + 1 }}</td>
-              <td>{{ item.name + "-" + item.al.name }}</td>
+              <td>
+                <a
+                  style="color: black"
+                  href="#"
+                  @click.prevent="clickMusic(item.id)"
+                  >{{ item.name + "-" + item.al.name }}</a
+                >
+              </td>
               <td>{{ item.ar[0].name }}</td>
               <td>
                 {{
                   String((item.dt / 60000) | 0) +
                   ":" +
-                  String(((item.dt / 1000) % 60 | 0))
+                  String((item.dt / 1000) % 60 | 0)
                 }}
               </td>
             </tr>
@@ -115,20 +90,38 @@
         </n-table>
       </n-gi>
     </n-grid>
+    <div
+      style="
+        width: 90%;
+        background-color: #ffe12c;
+        z-index: 100;
+        position: fixed;
+        bottom: 0;
+        border-radius: 5%;
+      "
+    >
+      <audio controls autoplay :src="songUrl"></audio>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { useRouter } from "vue-router";
-import { getPlayListDetail } from "../../api/playListDetail";
+import { getPlayListDetail, getSongUrl } from "../../api/playListDetail";
 import { ref } from "vue";
 import { Tracks } from "../../type/Recommend";
-import { PlayListDetail } from "../../type/playListDetail";
-import { NTable, NGrid, NGi, NAvatar, NButton,NIcon } from "naive-ui";
-import { CaretForwardCircleOutline,AddSharp,HeartOutline,ShareOutline ,LogoTwitch} from "@vicons/ionicons5";
+import { NTable, NGrid, NGi, NAvatar, NButton, NIcon } from "naive-ui";
+import {
+  CaretForwardCircleOutline,
+  AddSharp,
+  HeartOutline,
+  ShareOutline,
+  LogoTwitch,
+} from "@vicons/ionicons5";
 
 const { currentRoute } = useRouter();
 const musicList = ref<Array<Tracks>>([]);
+const songUrl = ref<string>("");
 const neededInfo = ref<{
   name: string;
   description: string;
@@ -146,15 +139,31 @@ const neededInfo = ref<{
 });
 const getPlayDetail = () => {
   getPlayListDetail(currentRoute.value.query.id as string).then((res) => {
-    const listVo = res.data as unknown as PlayListDetail;
-    musicList.value = listVo.playlist.tracks;
-    neededInfo.value.coverImgUrl = listVo.playlist.coverImgUrl;
-    neededInfo.value.name = listVo.playlist.name;
-    neededInfo.value.description = listVo.playlist.description;
-    neededInfo.value.identityIconUrl = listVo.playlist.creator.avatarUrl;
-    neededInfo.value.nickname = listVo.playlist.creator.nickname;
+    musicList.value = res.data.playlist.tracks;
+    neededInfo.value.coverImgUrl = res.data.playlist.coverImgUrl;
+    neededInfo.value.name = res.data.playlist.name;
+    neededInfo.value.description = res.data.playlist.description;
+    neededInfo.value.identityIconUrl = res.data.playlist.creator.avatarUrl;
+    neededInfo.value.nickname = res.data.playlist.creator.nickname;
+  });
+};
+
+const clickMusic = (id: number) => {
+  getSongUrl(id).then((res) => {
+    songUrl.value = res.data.data[0].url;
   });
 };
 
 getPlayDetail();
 </script>
+
+<style lang="less">
+&::-webkit-media-controls-enclosure {
+  background-color: transparent;
+}
+
+audio {
+  width: 40%;
+  height: 45px;
+}
+</style>
