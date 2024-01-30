@@ -27,13 +27,23 @@ import type { MenuOption } from "naive-ui";
 import { NMenu, NIcon, NInput } from "naive-ui";
 import { Component, h, ref } from "vue";
 import { MusicalNotes, Search } from "@vicons/ionicons5";
+import { RouterLink } from "vue-router";
 
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
 }
 const menuOptions: MenuOption[] = [
   {
-    label: "酷悦音乐",
+    label: () =>
+      h(
+        RouterLink,
+        {
+          to: {
+            path: "/recommend",
+          },
+        },
+        { default: () => "酷悦音乐" }
+      ),
     key: "index",
     icon: renderIcon(MusicalNotes),
   },
