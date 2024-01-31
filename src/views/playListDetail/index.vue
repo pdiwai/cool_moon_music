@@ -126,7 +126,7 @@ const currentSong = ref<{
   songUrl: string;
   picUrl: string;
 }>({
-  index: 0,
+  index: undefined as any,
   name: "",
   nickname: "",
   songUrl: "",
