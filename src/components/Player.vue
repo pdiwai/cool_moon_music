@@ -20,7 +20,11 @@
           <div class="audioDiv-text">
             {{
               currentSong.name
-                ? currentSong.name + "-" + currentSong.nickname
+                ? currentSong.name +
+                  "-" +
+                  currentSong.alName +
+                  "-" +
+                  currentSong.nickname
                 : "暂无播放"
             }}
           </div>
@@ -148,12 +152,14 @@ const currentSong = ref<{
   nickname: string;
   songUrl: string;
   picUrl: string;
+  alName: string;
 }>({
   index: 0,
   name: "",
   nickname: "",
   songUrl: "",
   picUrl: "",
+  alName: "",
 });
 const isPlay = ref<boolean>(false);
 const audioRef = ref();
@@ -192,6 +198,7 @@ const preMusic = () => {
   emit("showIndex", currentSong.value.index);
   isPlay.value = true;
   currentSong.value.picUrl = props.musicList[currentSong.value.index].al.picUrl;
+  currentSong.value.alName = props.musicList[currentSong.value.index].al.name;
 };
 
 const nextMusic = () => {
@@ -232,6 +239,7 @@ const nextMusic = () => {
   currentSong.value.nickname =
     props.musicList[currentSong.value.index].ar[0].name;
   currentSong.value.picUrl = props.musicList[currentSong.value.index].al.picUrl;
+  currentSong.value.alName = props.musicList[currentSong.value.index].al.name;
   isPlay.value = true;
 };
 
@@ -274,6 +282,8 @@ watch(
       currentSong.value.nickname = props.currentSong.nickname;
       currentSong.value.index = props.currentSong.index;
       currentSong.value.picUrl = props.currentSong.picUrl;
+      currentSong.value.alName =
+        props.musicList[currentSong.value.index].al.name;
       isPlay.value = true;
     }
   }

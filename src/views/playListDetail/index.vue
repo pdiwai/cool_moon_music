@@ -93,6 +93,7 @@
         </n-table>
       </n-gi>
     </n-grid>
+    <div style="height: 100px;"></div>
     <!-- 播放器部分 -->
     <Player
       :music-list="musicList"
@@ -125,12 +126,14 @@ const currentSong = ref<{
   nickname: string;
   songUrl: string;
   picUrl: string;
+  alName: string;
 }>({
   index: undefined as any,
   name: "",
   nickname: "",
   songUrl: "",
   picUrl: "",
+  alName: "",
 });
 const neededInfo = ref<{
   name: string;
@@ -167,6 +170,7 @@ const clickMusic = (id: number, index: number) => {
   currentSong.value.nickname =
     musicList.value[currentSong.value.index].ar[0].name;
   currentSong.value.picUrl = musicList.value[currentSong.value.index].al.picUrl;
+  currentSong.value.alName = musicList.value[currentSong.value.index].al.name;
 };
 
 // 播放全部 从第一首开始播放
@@ -176,6 +180,7 @@ const playAll = () => {
   currentSong.value.nickname =
     musicList.value[currentSong.value.index].ar[0].name;
   currentSong.value.picUrl = musicList.value[currentSong.value.index].al.picUrl;
+  currentSong.value.alName = musicList.value[currentSong.value.index].al.name;
   getSongUrl(musicList.value[0].id).then((res) => {
     currentSong.value.songUrl = res.data.data[0].url;
   });
