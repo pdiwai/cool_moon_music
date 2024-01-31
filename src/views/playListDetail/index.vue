@@ -74,7 +74,7 @@
                 <a
                   :style="{
                     color:
-                      index === currentSong.index && songUrl !== ''
+                      index === currentSong.index && currentSong.songUrl !== ''
                         ? ''
                         : 'black',
                   }"
@@ -97,91 +97,11 @@
       </n-gi>
     </n-grid>
     <!-- 播放器部分 -->
-
-    <div class="audioDiv">
-      <div class="audioDiv-text">
-        {{
-          currentSong.name
-            ? currentSong.name + "-" + currentSong.nickname
-            : "暂无播放"
-        }}
-      </div>
-      <div class="audioDiv-audio">
-        <n-button
-          size="large"
-          circle
-          strong
-          quaternary
-          style="margin-left: 20px; width: 36px; height: 36px"
-          @click=""
-        >
-          <n-icon size="22"> <PlaySkipBack /></n-icon
-        ></n-button>
-        <n-button
-          size="large"
-          circle
-          strong
-          quaternary
-          style="
-            margin-left: 20px;
-            border: 1.5px solid black;
-            width: 36px;
-            height: 36px;
-          "
-          @click="musicPlayOrPause"
-        >
-          <n-icon size="22">
-            <Pause v-if="isPlay" />
-            <Play v-else /> </n-icon
-        ></n-button>
-        <n-button
-          size="large"
-          circle
-          strong
-          quaternary
-          style="margin-left: 20px; width: 36px; height: 36px"
-          @click="nextMusic"
-        >
-          <n-icon size="22"> <PlaySkipForward /></n-icon
-        ></n-button>
-
-        <audio
-          ref="audioRef"
-          controls
-          autoplay
-          :src="songUrl"
-          @ended="nextMusic"
-        ></audio>
-        <n-button
-          size="large"
-          circle
-          strong
-          quaternary
-          style="
-            margin-left: 20px;
-            border: 1px dashed black;
-            width: 28px;
-            height: 28px;
-          "
-          @click="
-            playType =
-              playType === 'radom'
-                ? 'list'
-                : playType === 'list'
-                ? 'cycle'
-                : playType === 'cycle'
-                ? 'radom'
-                : 'cycle'
-          "
-        >
-          <n-icon size="15">
-            <ShuffleOutline v-if="playType === 'radom'" />
-            <List v-if="playType === 'list'" />
-            <Repeat v-if="playType === 'cycle'" />
-          </n-icon>
-        </n-button>
-      </div>
-    </div>
+    <Player
+      :music-list="musicList"
+      :current-song="currentSong"
+      @show-index="showIndex"
+    ></Player>
   </div>
 </template>
 
@@ -197,27 +117,22 @@ import {
   HeartOutline,
   ShareOutline,
   LogoTwitch,
-  ShuffleOutline,
-  List,
-  Repeat,
-  Play,
-  Pause,
-  PlaySkipForward,
-  PlaySkipBack,
 } from "@vicons/ionicons5";
+import Player from "../../components/Player.vue";
 
 const { currentRoute } = useRouter();
 const musicList = ref<Array<Tracks>>([]);
-const songUrl = ref<string>("");
-// 播放方式
-const playType = ref<string>("list");
-const currentSong = ref<{ index: number; name: string; nickname: string }>({
+const currentSong = ref<{
+  index: number;
+  name: string;
+  nickname: string;
+  songUrl: string;
+}>({
   index: 0,
   name: "",
   nickname: "",
+  songUrl: "",
 });
-const isPlay = ref<boolean>(false);
-const audioRef = ref();
 const neededInfo = ref<{
   name: string;
   description: string;
@@ -246,7 +161,7 @@ const getPlayDetail = () => {
 
 const clickMusic = (id: number, index: number) => {
   getSongUrl(id).then((res) => {
-    songUrl.value = res.data.data[0].url;
+    currentSong.value.songUrl = res.data.data[0].url;
   });
   currentSong.value.index = index;
   currentSong.value.name = musicList.value[currentSong.value.index].name;
@@ -261,55 +176,13 @@ const playAll = () => {
   currentSong.value.nickname =
     musicList.value[currentSong.value.index].ar[0].name;
   getSongUrl(musicList.value[0].id).then((res) => {
-    songUrl.value = res.data.data[0].url;
+    currentSong.value.songUrl = res.data.data[0].url;
   });
 };
 
-const nextMusic = () => {
-  switch (playType.value) {
-    case "radom":
-      currentSong.value.index = Math.floor(
-        Math.random() * musicList.value.length
-      );
-      getSongUrl(musicList.value[currentSong.value.index].id).then((res) => {
-        songUrl.value = res.data.data[0].url;
-      });
-      break;
-    case "list":
-      currentSong.value.index =
-        songUrl.value !== ""
-          ? currentSong.value.index + 1
-          : currentSong.value.index;
-      getSongUrl(musicList.value[currentSong.value.index].id).then((res) => {
-        songUrl.value = res.data.data[0].url;
-      });
-      break;
-    case "cycle":
-      getSongUrl(musicList.value[currentSong.value.index].id).then((res) => {
-        songUrl.value = res.data.data[0].url;
-      });
-      break;
-
-    default:
-      break;
-  }
-  currentSong.value.name = musicList.value[currentSong.value.index].name;
-  currentSong.value.nickname =
-    musicList.value[currentSong.value.index].ar[0].name;
-  console.log(musicList.value[currentSong.value.index].name);
-};
-
-const musicPlayOrPause = () => {
-  isPlay.value = !isPlay.value;
-  if (isPlay.value) {
-    if (songUrl.value !== "") {
-      audioRef.value.play();
-    } else {
-      nextMusic();
-    }
-  } else {
-    audioRef.value.pause();
-  }
+// 播放器组件传递的当前歌曲index
+const showIndex = (value) => {
+  currentSong.value.index = value;
 };
 
 getPlayDetail();
