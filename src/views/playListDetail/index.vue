@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 90vw; padding: 5vh 5% 0 5%">
+  <div style="width: 90vw; padding: 5vh 5vw 0 5vw">
     <n-grid x-gap="80" :cols="4">
       <n-gi>
         <img :src="neededInfo.coverImgUrl" style="height: 40vh; width: 20vw" />
@@ -73,10 +73,7 @@
               <td>
                 <a
                   :style="{
-                    color:
-                      index === currentSong.index && currentSong.songUrl !== ''
-                        ? ''
-                        : 'black',
+                    color: index === currentSong.index ? '' : 'black',
                   }"
                   href="#"
                   @click.prevent="clickMusic(item.id, index)"
@@ -127,11 +124,13 @@ const currentSong = ref<{
   name: string;
   nickname: string;
   songUrl: string;
+  picUrl: string;
 }>({
   index: 0,
   name: "",
   nickname: "",
   songUrl: "",
+  picUrl: "",
 });
 const neededInfo = ref<{
   name: string;
@@ -167,6 +166,7 @@ const clickMusic = (id: number, index: number) => {
   currentSong.value.name = musicList.value[currentSong.value.index].name;
   currentSong.value.nickname =
     musicList.value[currentSong.value.index].ar[0].name;
+  currentSong.value.picUrl = musicList.value[currentSong.value.index].al.picUrl;
 };
 
 // 播放全部 从第一首开始播放
@@ -175,47 +175,18 @@ const playAll = () => {
   currentSong.value.name = musicList.value[currentSong.value.index].name;
   currentSong.value.nickname =
     musicList.value[currentSong.value.index].ar[0].name;
+  currentSong.value.picUrl = musicList.value[currentSong.value.index].al.picUrl;
   getSongUrl(musicList.value[0].id).then((res) => {
     currentSong.value.songUrl = res.data.data[0].url;
   });
 };
 
 // 播放器组件传递的当前歌曲index
-const showIndex = (value) => {
-  currentSong.value.index = value;
+const showIndex = (index) => {
+  currentSong.value.index = index;
 };
 
 getPlayDetail();
 </script>
 
-<style lang="less" scoped>
-&::-webkit-media-controls-enclosure {
-  background-color: transparent;
-}
-audio::-webkit-media-controls-play-button {
-  display: none;
-}
-audio {
-  width: 40%;
-  height: 45px;
-}
-
-.audioDiv {
-  width: 90%;
-  background-color: #ffe12c;
-  z-index: 100;
-  position: fixed;
-  bottom: 0;
-  border-radius: 5%;
-
-  &-text {
-    display: flex;
-    margin-left: 30px;
-  }
-
-  &-audio {
-    display: flex;
-    align-items: center;
-  }
-}
-</style>
+<style lang="less" scoped></style>

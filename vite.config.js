@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     port: 6060, //端口号
     host: true, //ip地址 或 '0.0.0.0' 或 "loaclhost"
-    open: true, //启动后是否自动打开浏览器
+    open: false, //启动后是否自动打开浏览器
     cors: true,
     fs: {
       strict: true,

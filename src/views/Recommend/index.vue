@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 90vw; padding: 0 5% 0 5%">
+  <div style="width: 90vw; padding: 0 5vw 0 5vw">
     <SecMenuBar></SecMenuBar>
     <n-carousel trigger="hover" style="width: 100%">
       <img class="carousel-img" src="../../assets/11.png" />

@@ -39,8 +39,6 @@ const menuOptions: MenuOption[] = [
 
 <style lang="less" scoped>
 .recommendDiv {
-  // width: 90vw;
-  // padding: 0 5% 0 5%;
   /deep/.n-menu {
     font-size: 14px !important;
   }
