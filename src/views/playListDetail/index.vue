@@ -16,6 +16,16 @@
         <div style="font-size: 15px; text-align: left">
           {{ neededInfo.description }}
         </div>
+        <n-button
+          color="#ffe12c"
+          text-color="black"
+          round
+          strong
+          size="large"
+          style="margin-top: 20px; min-width: 15vw; min-height: 5vh"
+        >
+          <n-icon size="25"> <DownloadOutline /> </n-icon>&nbsp;下载该歌单
+        </n-button>
       </n-gi>
       <n-gi span="3">
         <div style="font-size: 30px; font-weight: 600; text-align: left">
@@ -80,7 +90,11 @@
                   >{{ item.name + "-" + item.al.name }}</a
                 >
               </td>
-              <td>{{ item.ar[0].name }}</td>
+              <td>
+                <a style="color: black" v-for="(i, index) in item.ar"
+                  >{{ i.name }}<a v-if="index < item.ar.length - 1">、</a></a
+                >
+              </td>
               <td>
                 {{
                   String((item.dt / 60000) | 0) +
@@ -93,7 +107,7 @@
         </n-table>
       </n-gi>
     </n-grid>
-    <div style="height: 100px;"></div>
+    <div style="height: 100px"></div>
     <!-- 播放器部分 -->
     <Player
       :music-list="musicList"
@@ -115,6 +129,7 @@ import {
   HeartOutline,
   ShareOutline,
   LogoTwitch,
+  DownloadOutline,
 } from "@vicons/ionicons5";
 import Player from "../../components/Player.vue";
 
@@ -167,8 +182,16 @@ const clickMusic = (id: number, index: number) => {
   });
   currentSong.value.index = index;
   currentSong.value.name = musicList.value[currentSong.value.index].name;
-  currentSong.value.nickname =
-    musicList.value[currentSong.value.index].ar[0].name;
+  musicList.value[currentSong.value.index].ar.forEach((item) => {
+    currentSong.value.nickname = currentSong.value.nickname.concat(
+      item.name,
+      "、"
+    );
+  });
+  currentSong.value.nickname = currentSong.value.nickname.slice(
+    0,
+    currentSong.value.nickname.length - 1
+  );
   currentSong.value.picUrl = musicList.value[currentSong.value.index].al.picUrl;
   currentSong.value.alName = musicList.value[currentSong.value.index].al.name;
 };
@@ -177,8 +200,16 @@ const clickMusic = (id: number, index: number) => {
 const playAll = () => {
   currentSong.value.index = 0;
   currentSong.value.name = musicList.value[currentSong.value.index].name;
-  currentSong.value.nickname =
-    musicList.value[currentSong.value.index].ar[0].name;
+  musicList.value[currentSong.value.index].ar.forEach((item) => {
+    currentSong.value.nickname = currentSong.value.nickname.concat(
+      item.name,
+      "、"
+    );
+  });
+  currentSong.value.nickname = currentSong.value.nickname.slice(
+    0,
+    currentSong.value.nickname.length - 1
+  );
   currentSong.value.picUrl = musicList.value[currentSong.value.index].al.picUrl;
   currentSong.value.alName = musicList.value[currentSong.value.index].al.name;
   getSongUrl(musicList.value[0].id).then((res) => {
