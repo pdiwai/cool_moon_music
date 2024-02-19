@@ -1,18 +1,9 @@
 <template>
-  <div style="width: 90vw; padding: 5vh 5vw 0 5vw">
+  <div class="playListDetail">
     <n-grid x-gap="80" :cols="4">
       <n-gi>
         <img :src="neededInfo.coverImgUrl" style="height: 40vh; width: 20vw" />
-        <div
-          style="
-            font-size: 25px;
-            font-weight: 600;
-            text-align: left;
-            margin-top: 20px;
-          "
-        >
-          歌单简介
-        </div>
+        <div class="introductionTitle">歌单简介</div>
         <div style="font-size: 15px; text-align: left">
           {{ neededInfo.description }}
         </div>
@@ -22,10 +13,13 @@
           round
           strong
           size="large"
-          style="margin-top: 20px; min-width: 15vw; min-height: 5vh"
+          class="downloadList"
         >
           <n-icon size="25"> <DownloadOutline /> </n-icon>&nbsp;下载该歌单
         </n-button>
+        <hr />
+        <img src="../../assets/qrcode.jpg" style="height: 26vh; width: 13vw" />
+        <div style="color: gray;">手机扫描二维码关注公众号</div>
       </n-gi>
       <n-gi span="3">
         <div style="font-size: 30px; font-weight: 600; text-align: left">
@@ -225,4 +219,28 @@ const showIndex = (index) => {
 getPlayDetail();
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.playListDetail {
+  width: 90vw;
+  padding: 5vh 5vw 0 5vw;
+
+  .introductionTitle {
+    font-size: 25px;
+    font-weight: 600;
+    text-align: left;
+    margin-top: 20px;
+  }
+
+  .downloadList {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    min-width: 15vw;
+    min-height: 5vh;
+  }
+
+  hr {
+    border-color: rgb(255, 255, 255);
+    width: 20vw;
+  }
+}
+</style>
