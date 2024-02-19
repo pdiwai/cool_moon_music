@@ -259,7 +259,7 @@ const musicPlayOrPause = () => {
 
 const mouseEnter = () => {
   $("#father").stop(false, true).animate({
-    bottom: "+=70px",
+    bottom: "70",
   });
   $("#father").on("mouseEnter", (e) => {
     if (e.target != e.currentTarget) {
@@ -270,7 +270,7 @@ const mouseEnter = () => {
 
 const mouseLeave = () => {
   $("#father").stop(false, true).animate({
-    bottom: "-=70px",
+    bottom: "0",
   });
 };
 watch(
