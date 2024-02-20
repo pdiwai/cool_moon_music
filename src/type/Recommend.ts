@@ -194,6 +194,7 @@ export interface Tracks {
   v: number;
   version: number;
   videoInfo: VideoInfo;
+  tns: Array<string>;
 }
 
 export interface BrFidSizeVdSr {

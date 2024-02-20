@@ -19,7 +19,7 @@
         </n-button>
         <hr />
         <img src="../../assets/qrcode.jpg" style="height: 26vh; width: 13vw" />
-        <div style="color: gray;">手机扫描二维码关注公众号</div>
+        <div style="color: gray">手机扫描二维码关注公众号</div>
       </n-gi>
       <n-gi span="3">
         <div style="font-size: 30px; font-weight: 600; text-align: left">
@@ -65,9 +65,9 @@
         <n-table striped style="margin-top: 20px">
           <thead>
             <tr>
-              <th>序号</th>
-              <th>歌曲</th>
-              <th>歌手</th>
+              <th>#</th>
+              <th>标题</th>
+              <th>专辑</th>
               <th>时长</th>
             </tr>
           </thead>
@@ -75,19 +75,56 @@
             <tr v-for="(item, index) in musicList" :key="item.id">
               <td>{{ index + 1 }}</td>
               <td>
-                <a
-                  :style="{
-                    color: index === currentSong.index ? '' : 'black',
-                  }"
-                  href="#"
-                  @click.prevent="clickMusic(item.id, index)"
-                  >{{ item.name + "-" + item.al.name }}</a
-                >
+                <div>
+                  <a
+                    :style="{
+                      color: index === currentSong.index ? '' : 'black',
+                    }"
+                    href="#"
+                    @click.prevent="clickMusic(item.id, index)"
+                    >{{ item.name }}</a
+                  >
+                  <a style="color: #9c9c9c" href="#">{{
+                    item.tns ? "(" + item.tns[0] + ")" : ""
+                  }}</a>
+                </div>
+                <div style="display: flex; align-items: center">
+                  <n-tag
+                    v-if="item.originCoverType !== 0"
+                    size="small"
+                    round
+                    :color="{ textColor: '#ad0404', borderColor: '#ad0404' }"
+                  >
+                    VIP
+                  </n-tag>
+                  <n-tag
+                    v-if="item.mv !== 0"
+                    size="small"
+                    round
+                    :color="{ textColor: '#ad0404', borderColor: '#ad0404' }"
+                  >
+                    MV<PlayCircleOutline
+                      v-if="item.mv !== 0"
+                      style="color: #ad0404; width: 13px;"
+                    />
+                  </n-tag>
+
+                  <a
+                    style="color: #9c9c9c; font-size: smaller"
+                    v-for="(i, index) in item.ar"
+                    >{{ i.name }}<a v-if="index < item.ar.length - 1">、</a></a
+                  >
+                </div>
+                <div>
+                  <a style="color: #9c9c9c; font-size: smaller"
+                    >{{ item.alia[0] }}
+                  </a>
+                </div>
               </td>
               <td>
-                <a style="color: black" v-for="(i, index) in item.ar"
-                  >{{ i.name }}<a v-if="index < item.ar.length - 1">、</a></a
-                >
+                <a style="color: #9c9c9c; font-size: smaller">{{
+                  item.al.name
+                }}</a>
               </td>
               <td>
                 {{
@@ -116,7 +153,7 @@ import { useRouter } from "vue-router";
 import { getPlayListDetail, getSongUrl } from "../../api/playListDetail";
 import { ref } from "vue";
 import { Tracks } from "../../type/Recommend";
-import { NTable, NGrid, NGi, NAvatar, NButton, NIcon } from "naive-ui";
+import { NTable, NGrid, NGi, NAvatar, NButton, NIcon, NTag } from "naive-ui";
 import {
   CaretForwardCircleOutline,
   AddSharp,
@@ -124,6 +161,7 @@ import {
   ShareOutline,
   LogoTwitch,
   DownloadOutline,
+  PlayCircleOutline,
 } from "@vicons/ionicons5";
 import Player from "../../components/Player.vue";
 
@@ -176,6 +214,7 @@ const clickMusic = (id: number, index: number) => {
   });
   currentSong.value.index = index;
   currentSong.value.name = musicList.value[currentSong.value.index].name;
+  currentSong.value.nickname = "";
   musicList.value[currentSong.value.index].ar.forEach((item) => {
     currentSong.value.nickname = currentSong.value.nickname.concat(
       item.name,
@@ -194,6 +233,7 @@ const clickMusic = (id: number, index: number) => {
 const playAll = () => {
   currentSong.value.index = 0;
   currentSong.value.name = musicList.value[currentSong.value.index].name;
+  currentSong.value.nickname = "";
   musicList.value[currentSong.value.index].ar.forEach((item) => {
     currentSong.value.nickname = currentSong.value.nickname.concat(
       item.name,

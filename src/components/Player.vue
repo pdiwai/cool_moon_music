@@ -197,6 +197,8 @@ const preMusic = () => {
   }
   emit("showIndex", currentSong.value.index);
   isPlay.value = true;
+  currentSong.value.nickname =
+    props.musicList[currentSong.value.index].ar[0].name;
   currentSong.value.picUrl = props.musicList[currentSong.value.index].al.picUrl;
   currentSong.value.alName = props.musicList[currentSong.value.index].al.name;
 };
