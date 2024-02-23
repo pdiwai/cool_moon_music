@@ -16,14 +16,15 @@
       /></n-gi>
       <n-gi span="2">
         <div style="height: 80vh; overflow: auto">
-          <p v-if="uncollectedLyric">暂无歌词</p>
+          <p v-if="uncollectedLyric && !loading">暂无歌词</p>
+          <p v-if="loading">歌词加载中</p>
           <ul v-else style="list-style-type: none">
             <li
-              v-for="(item, index) in lyricAndPersonList"
+              v-for="(item, index) in lyricList"
               :key="index"
               :style="{ color: lineNo === index ? 'red' : '' }"
             >
-              {{ index === 0 && item.lyric === "" ? item.time : item.lyric }}
+              {{ item.lyric }}
             </li>
           </ul>
         </div>
@@ -48,49 +49,55 @@ const props = defineProps({
 });
 
 const uncollectedLyric = ref<boolean>(false);
-const lyricAndPersonList = ref<Array<{ time: string; lyric: string }>>([]);
 const lyricList = ref<Array<{ time: string; lyric: string }>>([]);
-const lineNo = ref<number>(0);
+const lineNo = ref<number>(-1);
+const loading = ref<boolean>(false);
 
 const getLyrucInfo = () => {
-  getLyric(props.currentSong.id).then((res) => {
-    uncollectedLyric.value = res.data.uncollected;
-    if (res.data.tlyric) {
-      const tempLyticList = res.data.tlyric.lyric.split("\n");
-      tempLyticList.forEach((item) => {
-        const tempVo = item.split("]");
-        if (tempVo.length > 0) {
-          const lyticItem = {
-            time: tempVo[0].slice(1),
-            lyric: tempVo[1],
-          };
-          lyricAndPersonList.value.push(lyticItem);
-        }
-      });
-      lyricList.value = lyricAndPersonList.value.slice(1);
-    }
-  });
+  loading.value = true;
+  getLyric(props.currentSong.id)
+    .then((res) => {
+      uncollectedLyric.value = res.data.uncollected;
+      if (res.data.tlyric) {
+        const tempLyticList = res.data.tlyric.lyric.split("\n");
+        tempLyticList.slice(1).forEach((item) => {
+          const tempVo = item.split("]");
+          if (tempVo.length > 0) {
+            const lyticItem = {
+              time: tempVo[0].slice(1),
+              lyric: tempVo[1],
+            };
+            lyricList.value.push(lyticItem);
+          }
+        });
+      }
+    })
+    .finally(() => {
+      loading.value = false;
+    });
 };
 getLyrucInfo();
 
 watch(
   () => props.currentSong.songUrl,
-  () => {
+  async () => {
     if (props.currentSong.songUrl !== "") {
-      getLyrucInfo();
+      lyricList.value = [];
+      await getLyrucInfo();
     }
   }
 );
 
 watch(
   () => props.currentTime,
-  async () => {
+  () => {
     if (props.currentTime !== "") {
+      // 这样写只能判断歌曲刚开始时，就打开歌词窗口的情况
       if (
-        lyricList.value[lineNo.value] &&
         lyricList.value[lineNo.value + 1] &&
-        lyricList.value[lineNo.value].time <= props.currentTime &&
-        lyricList.value[lineNo.value + 1].time > props.currentTime
+        lyricList.value[lineNo.value + 2] &&
+        lyricList.value[lineNo.value + 1].time <= props.currentTime &&
+        lyricList.value[lineNo.value + 2].time > props.currentTime
       ) {
         lineNo.value += 1;
       }

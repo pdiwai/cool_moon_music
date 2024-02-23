@@ -254,7 +254,8 @@ const updateTime = () => {
   const tempTime = audioRef.value.currentTime;
   const tempSec = (tempTime % 60).toFixed(3);
   const tempMin = Math.floor(tempTime / 60);
-  currentTime.value = (tempMin === 0 ? "0" : "") + tempMin + ":" + tempSec;
+  currentTime.value =
+    (tempMin.toString.length === 1 ? "0" : "") + tempMin + ":" + tempSec;
 };
 
 watch(

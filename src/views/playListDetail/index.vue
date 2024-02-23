@@ -213,10 +213,7 @@ const getPlayDetail = () => {
   });
 };
 
-const clickMusic = (id: number, index: number) => {
-  getSongUrl(id).then((res) => {
-    currentSong.value.songUrl = res.data.data[0].url;
-  });
+const clickMusic = async (id: number, index: number) => {
   currentSong.value.index = index;
   currentSong.value.name = musicList.value[currentSong.value.index].name;
   currentSong.value.nickname = "";
@@ -233,10 +230,13 @@ const clickMusic = (id: number, index: number) => {
   currentSong.value.picUrl = musicList.value[currentSong.value.index].al.picUrl;
   currentSong.value.alName = musicList.value[currentSong.value.index].al.name;
   currentSong.value.id = musicList.value[currentSong.value.index].id;
+  await getSongUrl(id).then((res) => {
+    currentSong.value.songUrl = res.data.data[0].url;
+  });
 };
 
 // 播放全部 从第一首开始播放
-const playAll = () => {
+const playAll = async () => {
   currentSong.value.index = 0;
   currentSong.value.name = musicList.value[currentSong.value.index].name;
   currentSong.value.nickname = "";
@@ -253,7 +253,7 @@ const playAll = () => {
   currentSong.value.picUrl = musicList.value[currentSong.value.index].al.picUrl;
   currentSong.value.alName = musicList.value[currentSong.value.index].al.name;
   currentSong.value.id = musicList.value[currentSong.value.index].id;
-  getSongUrl(musicList.value[0].id).then((res) => {
+  await getSongUrl(musicList.value[0].id).then((res) => {
     currentSong.value.songUrl = res.data.data[0].url;
   });
 };
