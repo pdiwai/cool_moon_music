@@ -84,7 +84,9 @@
                     @click.prevent="clickMusic(item.id, index)"
                     >{{ item.name }}
                     <a
-                      style="color: #9c9c9c"
+                      :style="{
+                        color: index === currentSong.index ? '' : '#9c9c9c',
+                      }"
                       @click.prevent="clickMusic(item.id, index)"
                     >
                       {{ item.tns ? "(" + item.tns[0] + ")" : "" }}
@@ -175,6 +177,7 @@ const currentSong = ref<{
   songUrl: string;
   picUrl: string;
   alName: string;
+  id: number;
 }>({
   index: undefined as any,
   name: "",
@@ -182,6 +185,7 @@ const currentSong = ref<{
   songUrl: "",
   picUrl: "",
   alName: "",
+  id: 0,
 });
 const neededInfo = ref<{
   name: string;
@@ -228,6 +232,7 @@ const clickMusic = (id: number, index: number) => {
   );
   currentSong.value.picUrl = musicList.value[currentSong.value.index].al.picUrl;
   currentSong.value.alName = musicList.value[currentSong.value.index].al.name;
+  currentSong.value.id = musicList.value[currentSong.value.index].id;
 };
 
 // 播放全部 从第一首开始播放
@@ -247,6 +252,7 @@ const playAll = () => {
   );
   currentSong.value.picUrl = musicList.value[currentSong.value.index].al.picUrl;
   currentSong.value.alName = musicList.value[currentSong.value.index].al.name;
+  currentSong.value.id = musicList.value[currentSong.value.index].id;
   getSongUrl(musicList.value[0].id).then((res) => {
     currentSong.value.songUrl = res.data.data[0].url;
   });

@@ -7,3 +7,6 @@ export function getPlayListDetail(id: string) {
 export function getSongUrl(id: number) {
   return axios.get(`/api/song/url?id=${id}`);
 }
+export function getLyric(id: number) {
+  return axios.get(`/api/lyric?id=${id}`);
+}

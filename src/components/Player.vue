@@ -1,113 +1,123 @@
 <template>
-  <div
-    class="audioDiv"
-    id="father"
-    @mouseenter="mouseEnter"
-    @mouseleave="mouseLeave"
-  >
-    <n-layout has-sider style="height: 110px">
-      <n-layout-sider style="width: 200px">
-        <n-image
-          v-if="currentSong.picUrl"
-          :src="currentSong.picUrl"
-          width="90"
-          height="90"
-          style="margin: 10px 0px 0px 60px"
-        />
-      </n-layout-sider>
-      <n-layout>
-        <n-layout-content style="height: 50px; overflow: hidden">
-          <div class="audioDiv-text">
-            {{
-              currentSong.name
-                ? currentSong.name +
-                  "-" +
-                  currentSong.alName +
-                  "-" +
-                  currentSong.nickname
-                : "暂无播放"
-            }}
-          </div>
-        </n-layout-content>
-        <n-layout-content style="height: 50px; overflow: hidden">
-          <div class="audioDiv-audio">
-            <n-button
-              size="large"
-              circle
-              strong
-              quaternary
-              style="margin-left: 20px; width: 36px; height: 36px"
-              @click="preMusic"
-            >
-              <n-icon size="22"> <PlaySkipBack /></n-icon
-            ></n-button>
-            <n-button
-              size="large"
-              circle
-              strong
-              quaternary
-              style="
-                margin-left: 20px;
-                border: 1.5px solid black;
-                width: 36px;
-                height: 36px;
-              "
-              @click="musicPlayOrPause"
-            >
-              <n-icon size="22">
-                <Pause v-if="isPlay" />
-                <Play v-else /> </n-icon
-            ></n-button>
-            <n-button
-              size="large"
-              circle
-              strong
-              quaternary
-              style="margin-left: 20px; width: 36px; height: 36px"
-              @click="nextMusic"
-            >
-              <n-icon size="22"> <PlaySkipForward /></n-icon
-            ></n-button>
+  <div>
+    <div
+      class="audioDiv"
+      id="father"
+      @mouseenter="mouseEnter"
+      @mouseleave="mouseLeave"
+    >
+      <n-layout has-sider style="height: 110px">
+        <n-layout-sider style="width: 200px">
+          <n-image
+            v-if="currentSong.picUrl"
+            :src="currentSong.picUrl"
+            :preview-disabled="true"
+            width="90"
+            height="90"
+            style="margin: 10px 0px 0px 60px"
+            @click="showLyruc = true"
+          />
+        </n-layout-sider>
+        <n-layout>
+          <n-layout-content style="height: 50px; overflow: hidden">
+            <div class="audioDiv-text">
+              {{
+                currentSong.name
+                  ? currentSong.name +
+                    "-" +
+                    currentSong.alName +
+                    "-" +
+                    currentSong.nickname
+                  : "暂无播放"
+              }}
+            </div>
+          </n-layout-content>
+          <n-layout-content style="height: 50px; overflow: hidden">
+            <div class="audioDiv-audio">
+              <n-button
+                size="large"
+                circle
+                strong
+                quaternary
+                style="margin-left: 20px; width: 36px; height: 36px"
+                @click="preOrNextMusic('pre')"
+              >
+                <n-icon size="22"> <PlaySkipBack /></n-icon
+              ></n-button>
+              <n-button
+                size="large"
+                circle
+                strong
+                quaternary
+                style="
+                  margin-left: 20px;
+                  border: 1.5px solid black;
+                  width: 36px;
+                  height: 36px;
+                "
+                @click="musicPlayOrPause"
+              >
+                <n-icon size="22">
+                  <Pause v-if="isPlay" />
+                  <Play v-else /> </n-icon
+              ></n-button>
+              <n-button
+                size="large"
+                circle
+                strong
+                quaternary
+                style="margin-left: 20px; width: 36px; height: 36px"
+                @click="preOrNextMusic('next')"
+              >
+                <n-icon size="22"> <PlaySkipForward /></n-icon
+              ></n-button>
 
-            <audio
-              ref="audioRef"
-              controls
-              autoplay
-              :src="currentSong.songUrl"
-              @ended="nextMusic"
-            ></audio>
-            <n-button
-              size="large"
-              circle
-              strong
-              quaternary
-              style="
-                margin-left: 20px;
-                border: 1px dashed black;
-                width: 28px;
-                height: 28px;
-              "
-              @click="
-                playType =
-                  playType === 'radom'
-                    ? 'list'
-                    : playType === 'list'
-                    ? 'cycle'
-                    : playType === 'cycle'
-                    ? 'radom'
-                    : 'cycle'
-              "
-            >
-              <n-icon size="15">
-                <ShuffleOutline v-if="playType === 'radom'" />
-                <List v-if="playType === 'list'" />
-                <Repeat v-if="playType === 'cycle'" />
-              </n-icon>
-            </n-button>
-          </div>
-        </n-layout-content>
+              <audio
+                ref="audioRef"
+                controls
+                autoplay
+                :src="currentSong.songUrl"
+                @timeupdate="updateTime"
+                @ended="preOrNextMusic('next')"
+              ></audio>
+              <n-button
+                size="large"
+                circle
+                strong
+                quaternary
+                style="
+                  margin-left: 20px;
+                  border: 1px dashed black;
+                  width: 28px;
+                  height: 28px;
+                "
+                @click="
+                  playType =
+                    playType === 'radom'
+                      ? 'list'
+                      : playType === 'list'
+                      ? 'cycle'
+                      : playType === 'cycle'
+                      ? 'radom'
+                      : 'cycle'
+                "
+              >
+                <n-icon size="15">
+                  <ShuffleOutline v-if="playType === 'radom'" />
+                  <List v-if="playType === 'list'" />
+                  <Repeat v-if="playType === 'cycle'" />
+                </n-icon>
+              </n-button>
+            </div>
+          </n-layout-content>
+        </n-layout>
       </n-layout>
-    </n-layout>
+    </div>
+    <div>
+      <n-modal v-model:show="showLyruc">
+        <lyric :current-song="currentSong" :current-time="currentTime" />
+      </n-modal>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
@@ -121,6 +131,7 @@ import {
   NLayoutSider,
   NLayoutContent,
   NImage,
+  NModal,
 } from "naive-ui";
 import {
   ShuffleOutline,
@@ -132,6 +143,7 @@ import {
   PlaySkipBack,
 } from "@vicons/ionicons5";
 import $ from "jquery";
+import lyric from "./Lyric.vue";
 
 const props = defineProps({
   musicList: {
@@ -146,6 +158,7 @@ const props = defineProps({
 const emit = defineEmits(["showIndex"]);
 // 播放方式
 const playType = ref<string>("list");
+const showLyruc = ref<boolean>(false);
 const currentSong = ref<{
   index: number;
   name: string;
@@ -153,6 +166,7 @@ const currentSong = ref<{
   songUrl: string;
   picUrl: string;
   alName: string;
+  id: number;
 }>({
   index: 0,
   name: "",
@@ -160,89 +174,48 @@ const currentSong = ref<{
   songUrl: "",
   picUrl: "",
   alName: "",
+  id: 0,
 });
 const isPlay = ref<boolean>(false);
 const audioRef = ref();
-const preMusic = () => {
+const currentTime = ref<string>("");
+
+const preOrNextMusic = (type: string) => {
   switch (playType.value) {
     case "radom":
       currentSong.value.index = Math.floor(
         Math.random() * props.musicList.length
       );
-      getSongUrl(props.musicList[currentSong.value.index].id).then((res) => {
-        currentSong.value.songUrl = res.data.data[0].url;
-      });
       break;
     case "list":
-      currentSong.value.index =
-        currentSong.value.songUrl !== ""
-          ? currentSong.value.index - 1
-          : currentSong.value.index;
-      getSongUrl(props.musicList[currentSong.value.index].id).then((res) => {
-        currentSong.value.songUrl = res.data.data[0].url;
-      });
-      break;
     case "cycle":
-      currentSong.value.index =
-        currentSong.value.songUrl !== ""
-          ? currentSong.value.index - 1
-          : currentSong.value.index;
-      getSongUrl(props.musicList[currentSong.value.index].id).then((res) => {
-        currentSong.value.songUrl = res.data.data[0].url;
-      });
+      if (type === "pre") {
+        currentSong.value.index =
+          currentSong.value.songUrl !== ""
+            ? currentSong.value.index - 1
+            : currentSong.value.index;
+      } else {
+        currentSong.value.index =
+          currentSong.value.songUrl !== ""
+            ? currentSong.value.index + 1
+            : currentSong.value.index;
+      }
       break;
-
     default:
       break;
   }
-  emit("showIndex", currentSong.value.index);
-  isPlay.value = true;
-  currentSong.value.nickname =
-    props.musicList[currentSong.value.index].ar[0].name;
-  currentSong.value.picUrl = props.musicList[currentSong.value.index].al.picUrl;
-  currentSong.value.alName = props.musicList[currentSong.value.index].al.name;
-};
 
-const nextMusic = () => {
-  switch (playType.value) {
-    case "radom":
-      currentSong.value.index = Math.floor(
-        Math.random() * props.musicList.length
-      );
-      getSongUrl(props.musicList[currentSong.value.index].id).then((res) => {
-        currentSong.value.songUrl = res.data.data[0].url;
-      });
-      break;
-    case "list":
-      currentSong.value.index =
-        currentSong.value.songUrl !== ""
-          ? currentSong.value.index + 1
-          : currentSong.value.index;
-      getSongUrl(props.musicList[currentSong.value.index].id).then((res) => {
-        currentSong.value.songUrl = res.data.data[0].url;
-      });
-      break;
-    case "cycle":
-      currentSong.value.index =
-        currentSong.value.songUrl !== ""
-          ? currentSong.value.index + 1
-          : currentSong.value.index;
-      getSongUrl(props.musicList[currentSong.value.index].id).then((res) => {
-        currentSong.value.songUrl = res.data.data[0].url;
-      });
-      break;
-
-    default:
-      break;
-  }
-  emit("showIndex", currentSong.value.index);
-
+  getSongUrl(props.musicList[currentSong.value.index].id).then((res) => {
+    currentSong.value.songUrl = res.data.data[0].url;
+  });
   currentSong.value.name = props.musicList[currentSong.value.index].name;
   currentSong.value.nickname =
     props.musicList[currentSong.value.index].ar[0].name;
   currentSong.value.picUrl = props.musicList[currentSong.value.index].al.picUrl;
   currentSong.value.alName = props.musicList[currentSong.value.index].al.name;
+  currentSong.value.id = props.musicList[currentSong.value.index].al.id;
   isPlay.value = true;
+  emit("showIndex", currentSong.value.index);
 };
 
 const musicPlayOrPause = () => {
@@ -251,8 +224,9 @@ const musicPlayOrPause = () => {
     if (currentSong.value.songUrl !== "") {
       emit("showIndex", currentSong.value.index);
       audioRef.value.play();
+      console.log(audioRef.value);
     } else {
-      nextMusic();
+      preOrNextMusic("next");
     }
   } else {
     audioRef.value.pause();
@@ -275,6 +249,14 @@ const mouseLeave = () => {
     bottom: "0",
   });
 };
+
+const updateTime = () => {
+  const tempTime = audioRef.value.currentTime;
+  const tempSec = (tempTime % 60).toFixed(3);
+  const tempMin = Math.floor(tempTime / 60);
+  currentTime.value = (tempMin === 0 ? "0" : "") + tempMin + ":" + tempSec;
+};
+
 watch(
   () => props.currentSong.songUrl,
   () => {
@@ -284,6 +266,7 @@ watch(
       currentSong.value.nickname = props.currentSong.nickname;
       currentSong.value.index = props.currentSong.index;
       currentSong.value.picUrl = props.currentSong.picUrl;
+      currentSong.value.id = props.currentSong.id;
       currentSong.value.alName =
         props.musicList[currentSong.value.index].al.name;
       isPlay.value = true;
