@@ -1,28 +1,49 @@
 <template>
   <div
     style="
-      background-color: rgba(255, 255, 255, 0.944);
+      background-color: rgb(255, 255, 255);
+      color: #000;
       width: 90vw;
       height: 90vh;
       border-radius: 1%;
     "
   >
-    <n-grid :cols="3">
+    <n-grid :cols="3" style="align-items: center">
       <n-gi
         ><img
           :src="props.currentSong.picUrl"
-          width="80%"
+          width="90%"
           style="border-radius: 50%"
       /></n-gi>
       <n-gi span="2">
-        <div style="height: 80vh; overflow: auto">
-          <p v-if="uncollectedLyric && !loading">暂无歌词</p>
+        <div style="font-size: 35px; color: #2f2f2f">
+          {{ currentSong.name }}
+        </div>
+        <div style="font-size: 20px; color: #737373">
+          {{ currentSong.nickname }}
+        </div>
+        <div
+          style="
+            height: 65vh;
+            overflow: auto;
+            font-size: large;
+            color: #858585;
+            margin-top: 30px;
+          "
+        >
           <p v-if="loading">歌词加载中</p>
-          <ul v-else style="list-style-type: none">
+          <p v-if="uncollectedLyric || (loading && lyricList.length === 0)">
+            暂无歌词
+          </p>
+          <ul
+            v-if="!loading && lyricList.length > 0"
+            style="list-style-type: none"
+          >
             <li
               v-for="(item, index) in lyricList"
               :key="index"
               :style="{ color: lineNo === index ? 'red' : '' }"
+              style="margin-bottom: 10px"
             >
               {{ item.lyric }}
             </li>
@@ -83,6 +104,7 @@ watch(
   async () => {
     if (props.currentSong.songUrl !== "") {
       lyricList.value = [];
+      lineNo.value = -1;
       await getLyrucInfo();
     }
   }
@@ -92,13 +114,17 @@ watch(
   () => props.currentTime,
   () => {
     if (props.currentTime !== "") {
-      // 这样写只能判断歌曲刚开始时，就打开歌词窗口的情况
       if (
         lyricList.value[lineNo.value + 1] &&
         lyricList.value[lineNo.value + 2] &&
         lyricList.value[lineNo.value + 1].time <= props.currentTime &&
         lyricList.value[lineNo.value + 2].time > props.currentTime
       ) {
+        console.log(
+          lyricList.value[lineNo.value + 1].time,
+          props.currentTime,
+          lyricList.value[lineNo.value + 2].time
+        );
         lineNo.value += 1;
       }
     }

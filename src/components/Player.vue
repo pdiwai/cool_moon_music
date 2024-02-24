@@ -1,123 +1,134 @@
 <template>
-  <div>
-    <div
-      class="audioDiv"
-      id="father"
-      @mouseenter="mouseEnter"
-      @mouseleave="mouseLeave"
+  <div
+    class="audioDiv"
+    id="father"
+    @mouseenter="mouseEnter"
+    @mouseleave="mouseLeave"
+  >
+    <n-button
+      style="margin: 10px 0px 0px 10px"
+      size="large"
+      circle
+      strong
+      quaternary
+      @click="closeLyric"
+      ><n-icon size="30"> <ChevronDownSharp /></n-icon>
+    </n-button>
+    <n-layout
+      has-sider
+      style="height: 110px; width: 90vw; position: fixed"
+      :style="{ marginTop: bottom === '870' ? '800px' : '' }"
     >
-      <n-layout has-sider style="height: 110px">
-        <n-layout-sider style="width: 200px">
-          <n-image
-            v-if="currentSong.picUrl"
-            :src="currentSong.picUrl"
-            :preview-disabled="true"
-            width="90"
-            height="90"
-            style="margin: 10px 0px 0px 60px"
-            @click="showLyruc = true"
-          />
-        </n-layout-sider>
-        <n-layout>
-          <n-layout-content style="height: 50px; overflow: hidden">
-            <div class="audioDiv-text">
-              {{
-                currentSong.name
-                  ? currentSong.name +
-                    "-" +
-                    currentSong.alName +
-                    "-" +
-                    currentSong.nickname
-                  : "暂无播放"
-              }}
-            </div>
-          </n-layout-content>
-          <n-layout-content style="height: 50px; overflow: hidden">
-            <div class="audioDiv-audio">
-              <n-button
-                size="large"
-                circle
-                strong
-                quaternary
-                style="margin-left: 20px; width: 36px; height: 36px"
-                @click="preOrNextMusic('pre')"
-              >
-                <n-icon size="22"> <PlaySkipBack /></n-icon
-              ></n-button>
-              <n-button
-                size="large"
-                circle
-                strong
-                quaternary
-                style="
-                  margin-left: 20px;
-                  border: 1.5px solid black;
-                  width: 36px;
-                  height: 36px;
-                "
-                @click="musicPlayOrPause"
-              >
-                <n-icon size="22">
-                  <Pause v-if="isPlay" />
-                  <Play v-else /> </n-icon
-              ></n-button>
-              <n-button
-                size="large"
-                circle
-                strong
-                quaternary
-                style="margin-left: 20px; width: 36px; height: 36px"
-                @click="preOrNextMusic('next')"
-              >
-                <n-icon size="22"> <PlaySkipForward /></n-icon
-              ></n-button>
+      <n-layout-sider style="width: 200px">
+        <n-image
+          v-if="currentSong.picUrl && bottom !== '870'"
+          :src="currentSong.picUrl"
+          :preview-disabled="true"
+          width="90"
+          height="90"
+          style="margin: 10px 0px 0px 60px"
+          @click="showLyric"
+        />
+      </n-layout-sider>
+      <n-layout>
+        <n-layout-content style="height: 50px; overflow: hidden">
+          <div v-if="bottom !== '870'" class="audioDiv-text">
+            {{
+              currentSong.name
+                ? currentSong.name +
+                  "-" +
+                  currentSong.alName +
+                  "-" +
+                  currentSong.nickname
+                : "暂无播放"
+            }}
+          </div>
+        </n-layout-content>
+        <n-layout-content style="height: 50px; overflow: hidden">
+          <div class="audioDiv-audio">
+            <n-button
+              size="large"
+              circle
+              strong
+              quaternary
+              style="margin-left: 20px; width: 36px; height: 36px"
+              @click="preOrNextMusic('pre')"
+            >
+              <n-icon size="22"> <PlaySkipBack /></n-icon
+            ></n-button>
+            <n-button
+              size="large"
+              circle
+              strong
+              quaternary
+              style="
+                margin-left: 20px;
+                border: 1.5px solid black;
+                width: 36px;
+                height: 36px;
+              "
+              @click="musicPlayOrPause"
+            >
+              <n-icon size="22">
+                <Pause v-if="isPlay" />
+                <Play v-else /> </n-icon
+            ></n-button>
+            <n-button
+              size="large"
+              circle
+              strong
+              quaternary
+              style="margin-left: 20px; width: 36px; height: 36px"
+              @click="preOrNextMusic('next')"
+            >
+              <n-icon size="22"> <PlaySkipForward /></n-icon
+            ></n-button>
 
-              <audio
-                ref="audioRef"
-                controls
-                autoplay
-                :src="currentSong.songUrl"
-                @timeupdate="updateTime"
-                @ended="preOrNextMusic('next')"
-              ></audio>
-              <n-button
-                size="large"
-                circle
-                strong
-                quaternary
-                style="
-                  margin-left: 20px;
-                  border: 1px dashed black;
-                  width: 28px;
-                  height: 28px;
-                "
-                @click="
-                  playType =
-                    playType === 'radom'
-                      ? 'list'
-                      : playType === 'list'
-                      ? 'cycle'
-                      : playType === 'cycle'
-                      ? 'radom'
-                      : 'cycle'
-                "
-              >
-                <n-icon size="15">
-                  <ShuffleOutline v-if="playType === 'radom'" />
-                  <List v-if="playType === 'list'" />
-                  <Repeat v-if="playType === 'cycle'" />
-                </n-icon>
-              </n-button>
-            </div>
-          </n-layout-content>
-        </n-layout>
+            <audio
+              ref="audioRef"
+              controls
+              autoplay
+              :src="currentSong.songUrl"
+              @timeupdate="updateTime"
+              @ended="preOrNextMusic('next')"
+            ></audio>
+            <n-button
+              size="large"
+              circle
+              strong
+              quaternary
+              style="
+                margin-left: 20px;
+                border: 1px dashed black;
+                width: 28px;
+                height: 28px;
+              "
+              @click="
+                playType =
+                  playType === 'radom'
+                    ? 'list'
+                    : playType === 'list'
+                    ? 'cycle'
+                    : playType === 'cycle'
+                    ? 'radom'
+                    : 'cycle'
+              "
+            >
+              <n-icon size="15">
+                <ShuffleOutline v-if="playType === 'radom'" />
+                <List v-if="playType === 'list'" />
+                <Repeat v-if="playType === 'cycle'" />
+              </n-icon>
+            </n-button>
+          </div>
+        </n-layout-content>
       </n-layout>
-    </div>
-    <div>
-      <n-modal v-model:show="showLyruc">
-        <lyric :current-song="currentSong" :current-time="currentTime" />
-      </n-modal>
-    </div>
+    </n-layout>
+    <lyric
+      style="margin-top: 50px"
+      :current-song="currentSong"
+      :current-time="currentTime"
+    />
   </div>
 </template>
 <script lang="ts" setup>
@@ -131,7 +142,6 @@ import {
   NLayoutSider,
   NLayoutContent,
   NImage,
-  NModal,
 } from "naive-ui";
 import {
   ShuffleOutline,
@@ -141,6 +151,7 @@ import {
   Pause,
   PlaySkipForward,
   PlaySkipBack,
+  ChevronDownSharp,
 } from "@vicons/ionicons5";
 import $ from "jquery";
 import lyric from "./Lyric.vue";
@@ -158,7 +169,6 @@ const props = defineProps({
 const emit = defineEmits(["showIndex"]);
 // 播放方式
 const playType = ref<string>("list");
-const showLyruc = ref<boolean>(false);
 const currentSong = ref<{
   index: number;
   name: string;
@@ -179,6 +189,7 @@ const currentSong = ref<{
 const isPlay = ref<boolean>(false);
 const audioRef = ref();
 const currentTime = ref<string>("");
+const bottom = ref<string>("0");
 
 const preOrNextMusic = (type: string) => {
   switch (playType.value) {
@@ -213,7 +224,7 @@ const preOrNextMusic = (type: string) => {
     props.musicList[currentSong.value.index].ar[0].name;
   currentSong.value.picUrl = props.musicList[currentSong.value.index].al.picUrl;
   currentSong.value.alName = props.musicList[currentSong.value.index].al.name;
-  currentSong.value.id = props.musicList[currentSong.value.index].al.id;
+  currentSong.value.id = props.musicList[currentSong.value.index].id;
   isPlay.value = true;
   emit("showIndex", currentSong.value.index);
 };
@@ -224,7 +235,6 @@ const musicPlayOrPause = () => {
     if (currentSong.value.songUrl !== "") {
       emit("showIndex", currentSong.value.index);
       audioRef.value.play();
-      console.log(audioRef.value);
     } else {
       preOrNextMusic("next");
     }
@@ -234,20 +244,40 @@ const musicPlayOrPause = () => {
 };
 
 const mouseEnter = () => {
-  $("#father").stop(false, true).animate({
-    bottom: "70",
-  });
-  $("#father").on("mouseEnter", (e) => {
-    if (e.target != e.currentTarget) {
-      return;
-    }
-  });
+  if (bottom.value === "0") {
+    $("#father").stop(false, true).animate({
+      bottom: "70",
+    });
+    bottom.value = "70";
+    $("#father").on("mouseEnter", (e) => {
+      if (e.target != e.currentTarget) {
+        return;
+      }
+    });
+  }
 };
 
 const mouseLeave = () => {
+  if (bottom.value === "70") {
+    $("#father").stop(false, true).animate({
+      bottom: "0",
+    });
+    bottom.value = "0";
+  }
+};
+
+const showLyric = () => {
+  $("#father").stop(false, true).animate({
+    bottom: "870",
+  });
+  bottom.value = "870";
+};
+
+const closeLyric = () => {
   $("#father").stop(false, true).animate({
     bottom: "0",
   });
+  bottom.value = "0";
 };
 
 const updateTime = () => {
@@ -255,7 +285,11 @@ const updateTime = () => {
   const tempSec = (tempTime % 60).toFixed(3);
   const tempMin = Math.floor(tempTime / 60);
   currentTime.value =
-    (tempMin.toString.length === 1 ? "0" : "") + tempMin + ":" + tempSec;
+    (tempMin.toString().length === 1 ? "0" : "") +
+    tempMin +
+    ":" +
+    ((Number(tempSec) | 0).toString().length === 1 ? "0" : "") +
+    tempSec;
 };
 
 watch(
@@ -290,12 +324,15 @@ audio {
 
 .audioDiv {
   width: 90%;
+  height: 95%;
   z-index: 100;
   position: fixed;
   bottom: 0;
   border-radius: 5%;
-  margin-bottom: -70px;
+  margin-bottom: -870px;
+  background-color: white;
   box-shadow: 0px -2px 5px 0px rgb(201, 201, 201);
+  display: flex;
 
   &-text {
     display: flex;
