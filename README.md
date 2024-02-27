@@ -5,10 +5,10 @@
 ## 已完成功能
 
 - 热门歌单推荐
-  ![alt text](recommend.png)
+  ![alt text](./src/assets/recommend.png)
 - 歌单列表
-  ![alt text](playList.png)
+  ![alt text](./src/assets/playList.png)
 - 播放列表音乐（随机/循环/列表、音乐切换）
-  ![alt text](palyer.png)
+  ![alt text](./src/assets/palyer.png)
 - 查看歌词（当前歌词高亮显示）
-  ![alt text](lyric.png)
+  ![alt text](./src/assets/lyric.png)
