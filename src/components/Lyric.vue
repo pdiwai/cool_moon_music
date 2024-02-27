@@ -120,11 +120,6 @@ watch(
         lyricList.value[lineNo.value + 1].time <= props.currentTime &&
         lyricList.value[lineNo.value + 2].time > props.currentTime
       ) {
-        console.log(
-          lyricList.value[lineNo.value + 1].time,
-          props.currentTime,
-          lyricList.value[lineNo.value + 2].time
-        );
         lineNo.value += 1;
       }
     }

@@ -1,7 +1,14 @@
-# Vue 3 + Vite
+# 酷悦音乐（cool_moon_music）
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## 网易云音乐 api+Vue3+TypeScript+Naive UI+Vite
 
-## Recommended IDE Setup
+## 已完成功能
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- 热门歌单推荐
+  ![alt text](recommend.png)
+- 歌单列表
+  ![alt text](playList.png)
+- 播放列表音乐（随机/循环/列表、音乐切换）
+  ![alt text](palyer.png)
+- 查看歌词（当前歌词高亮显示）
+  ![alt text](lyric.png)
