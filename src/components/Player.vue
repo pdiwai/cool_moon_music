@@ -16,22 +16,23 @@
     </n-button>
     <n-layout
       has-sider
-      style="height: 110px; width: 90vw; position: fixed"
-      :style="{ marginTop: bottom === '870' ? '800px' : '' }"
+      style="height: 11vh; width: 80vw; position: fixed"
+      :style="{ marginTop: bottom === '870' ? '80vh' : '' }"
     >
-      <n-layout-sider style="width: 200px">
+      <n-layout-sider
+        content-style="padding-top:10px"
+      >
         <n-image
           v-if="currentSong.picUrl && bottom !== '870'"
           :src="currentSong.picUrl"
           :preview-disabled="true"
           width="90"
           height="90"
-          style="margin: 10px 0px 0px 60px"
           @click="showLyric"
         />
       </n-layout-sider>
       <n-layout>
-        <n-layout-content style="height: 50px; overflow: hidden">
+        <n-layout-content style="height: 5vh">
           <div v-if="bottom !== '870'" class="audioDiv-text">
             {{
               currentSong.name
@@ -44,14 +45,14 @@
             }}
           </div>
         </n-layout-content>
-        <n-layout-content style="height: 50px; overflow: hidden">
+        <n-layout-content style="height: 5vh">
           <div class="audioDiv-audio">
             <n-button
               size="large"
               circle
               strong
               quaternary
-              style="margin-left: 20px; width: 36px; height: 36px"
+              style="margin-left: 20px; width: 4.5vh; height: 4.5vh"
               @click="preOrNextMusic('pre')"
             >
               <n-icon size="22"> <PlaySkipBack /></n-icon
@@ -64,8 +65,8 @@
               style="
                 margin-left: 20px;
                 border: 1.5px solid black;
-                width: 36px;
-                height: 36px;
+                width: 4.5vh;
+                height: 4.5vh;
               "
               @click="musicPlayOrPause"
             >
@@ -78,7 +79,7 @@
               circle
               strong
               quaternary
-              style="margin-left: 20px; width: 36px; height: 36px"
+              style="margin-left: 20px; width: 4.5vh; height: 4.5vh"
               @click="preOrNextMusic('next')"
             >
               <n-icon size="22"> <PlaySkipForward /></n-icon
@@ -100,8 +101,8 @@
               style="
                 margin-left: 20px;
                 border: 1px dashed black;
-                width: 28px;
-                height: 28px;
+                width: 4vh;
+                height: 4vh;
               "
               @click="
                 playType =
@@ -128,6 +129,7 @@
       style="margin-top: 50px"
       :current-song="currentSong"
       :current-time="currentTime"
+      :is-play="isPlay"
     />
   </div>
 </template>
@@ -317,6 +319,7 @@ watch(
 audio::-webkit-media-controls-play-button {
   display: none;
 }
+
 audio {
   width: 40%;
   height: 45px;
@@ -338,6 +341,9 @@ audio {
     display: flex;
     margin-left: 30px;
     font-size: large;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &-audio {
