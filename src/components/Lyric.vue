@@ -29,7 +29,7 @@
           "
         >
           <p v-if="loading">歌词加载中</p>
-          <p v-if="uncollectedLyric || (loading && lyricList.length === 0)">
+          <p v-if="uncollectedLyric || (lyricList.length === 0 && !loading)">
             暂无歌词
           </p>
           <ul
@@ -174,5 +174,4 @@ watch(
     transform: rotate(360deg);
   }
 }
-
 </style>
