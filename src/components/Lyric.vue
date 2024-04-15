@@ -19,15 +19,7 @@
         <div style="font-size: 20px; color: #737373">
           {{ currentSong.nickname }}
         </div>
-        <div
-          style="
-            height: 65vh;
-            overflow: auto;
-            font-size: large;
-            color: #858585;
-            margin-top: 30px;
-          "
-        >
+        <div class="container">
           <p v-if="loading">歌词加载中</p>
           <p v-if="uncollectedLyric || (lyricList.length === 0 && !loading)">
             暂无歌词
@@ -35,6 +27,7 @@
           <ul
             v-if="!loading && lyricList.length > 0"
             style="list-style-type: none"
+            class="lyricRow"
           >
             <li
               v-for="(item, index) in lyricList"
@@ -124,6 +117,9 @@ watch(
         lyricList.value[lineNo.value + 2].time > props.currentTime
       ) {
         lineNo.value += 1;
+        (
+          document.querySelector(".lyricRow") as HTMLElement
+        ).style.transform = `translateY(-${lineNo.value * 30}px)`;
       }
     }
   }
@@ -173,5 +169,15 @@ watch(
   100% {
     transform: rotate(360deg);
   }
+}
+.container {
+  height: 65vh;
+  overflow: auto;
+  font-size: large;
+  color: #858585;
+  margin-top: 30px;
+}
+.container ul {
+  transition: 0.2s;
 }
 </style>
