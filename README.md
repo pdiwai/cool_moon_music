@@ -7,4 +7,4 @@
 - 歌单列表（音乐播放、切换）
   ![alt text](./src/assets/palyer.png)
 - 查看歌词（封面动画、当前歌词高亮显示、歌词滚动）
-  ![alt text](./src/assets/lyric.jpg)
+  ![alt text](./src/assets/lyric.png)
