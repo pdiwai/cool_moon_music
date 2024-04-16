@@ -172,12 +172,37 @@ watch(
 }
 .container {
   height: 65vh;
-  overflow: auto;
+  overflow-y:scroll;
   font-size: large;
   color: #858585;
   margin-top: 30px;
+  display: flex;
+  flex-direction: column-reverse;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
 }
 .container ul {
   transition: 0.2s;
+}
+
+
+/*滚动条高宽度*/
+.container::-webkit-scrollbar{
+    width: 5px;
+}
+/*滚动条滑块*/
+.container::-webkit-scrollbar-thumb{
+    border-radius: 3px;
+    box-shadow: inset 0 0 5px rgba(162, 81, 225, 0.2);
+    background: #dfdfdf;
+}
+/*滚动条里面轨道*/
+.container ::-webkit-scrollbar-track {
+    box-shadow: 1px 1px 5px rgba(162, 81, 225, 0.2) inset;
+ 
+}
+/*滚动条的小边角*/
+.container::-webkit-scrollbar-corner {
+    background: transparent;
 }
 </style>

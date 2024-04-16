@@ -19,9 +19,7 @@
       style="height: 11vh; width: 80vw; position: fixed"
       :style="{ marginTop: bottom === '870' ? '80vh' : '' }"
     >
-      <n-layout-sider
-        content-style="padding-top:10px"
-      >
+      <n-layout-sider content-style="padding-top:10px">
         <n-image
           v-if="currentSong.picUrl && bottom !== '870'"
           :src="currentSong.picUrl"
@@ -336,6 +334,7 @@ audio {
   background-color: white;
   box-shadow: 0px -2px 5px 0px rgb(201, 201, 201);
   display: flex;
+  overflow: hidden;
 
   &-text {
     display: flex;
