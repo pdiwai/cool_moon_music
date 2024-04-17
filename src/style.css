@@ -1,5 +1,5 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: fantasy;
   line-height: 1.5;
   font-weight: 400;
 
@@ -49,7 +49,6 @@ button {
 button:hover {
   border-color: #646cff;
 }
-
 
 .card {
   padding: 2em;
