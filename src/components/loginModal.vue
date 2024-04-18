@@ -86,8 +86,8 @@ const submit = (e: MouseEvent) => {
           message.error(res.data.msg);
         } else {
           sessionStorage.setItem("userInfo", JSON.stringify(res.data));
-          message.success("登录成功");
           emit("showModal", false);
+          window.location.reload();
         }
       });
     }

@@ -1,5 +1,5 @@
 <template>
-  <div style="display: flex; align-items: center; max-width: 100vw">
+  <div class="firstMenu">
     <n-menu
       mode="horizontal"
       :options="menuOptions"
@@ -18,7 +18,12 @@
       </template>
     </n-input>
 
-    <a v-if="!isLogin" style="width: 200px" @click="show = true">登录/注册</a>
+    <a
+      v-if="!isLogin"
+      style="width: 200px; margin-right: 5%"
+      @click="show = true"
+      >登录/注册</a
+    >
     <img
       v-else
       :src="avatarUrl"
@@ -116,19 +121,27 @@ const closeModal = () => {
 </script>
 
 <style lang="less" scoped>
-/deep/.n-menu {
-  font-size: 16px !important;
+.firstMenu {
+  display: flex;
+  align-items: center;
+  max-width: 100vw;
+  border-bottom: 1px solid #ededed;
+  height: 66px;
 }
-/deep/.n-menu .n-menu-item-content {
-  margin-left: 20%;
+/deep/.n-menu {
+  font-size: 19px !important;
+  .n-menu-item-content {
+    margin-left: 20%;
+  }
 }
 
 /deep/.n-menu.n-menu--horizontal
   .n-menu-item-content
-  .n-menu-item-content-header
+  .n-menu-item-content-header {
+  margin-top: -5px;
   a {
-  color: var(--n-item-text-color-horizontal);
-  font-weight: 600;
-  font-size: 20px;
+    font-weight: 600;
+    font-size: 28px;
+  }
 }
 </style>
