@@ -24,12 +24,12 @@
       @click="show = true"
       >登录/注册</a
     >
-    <img
-      v-else
-      :src="avatarUrl"
-      width="40"
-      style="border-radius: 50%; margin-right: 8vw"
-    />
+    <NDropdown v-else trigger="click" :options="options" @select="handleSelect">
+      <img
+        :src="avatarUrl"
+        width="40"
+        style="border-radius: 50%; margin-right: 8vw"
+    /></NDropdown>
 
     <n-modal
       v-model:show="show"
@@ -55,7 +55,15 @@
 
 <script lang="ts" setup>
 import type { MenuOption } from "naive-ui";
-import { NMenu, NIcon, NInput, NModal, NCard } from "naive-ui";
+import {
+  NMenu,
+  NIcon,
+  NInput,
+  NModal,
+  NCard,
+  NDropdown,
+  useMessage,
+} from "naive-ui";
 import { Component, h, ref } from "vue";
 import { MusicalNotes, Search } from "@vicons/ionicons5";
 import { RouterLink } from "vue-router";
@@ -104,6 +112,8 @@ const menuOptions: MenuOption[] = [
     ],
   },
 ];
+const options = [{ label: "退出登录", key: "logout" }];
+const message = useMessage();
 const value = ref<string>("");
 const show = ref<boolean>(false);
 const isLogin = ref<boolean>(false);
@@ -117,6 +127,14 @@ if (sessionStorage.getItem("userInfo")) {
 }
 const closeModal = () => {
   show.value = false;
+};
+
+const handleSelect = (key: string) => {
+  if (key === "logout") {
+    sessionStorage.clear();
+    message.success("退出登录成功");
+    window.location.reload();
+  }
 };
 </script>
 
