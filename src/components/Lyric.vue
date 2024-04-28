@@ -3,8 +3,7 @@
     style="
       background-color: rgb(255, 255, 255);
       color: #000;
-      width: 90vw;
-      height: 90vh;
+      width: 80vw;
       border-radius: 1%;
     "
   >

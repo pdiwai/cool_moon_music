@@ -19,41 +19,68 @@
         :name="item.name"
         :tab="item.name"
       >
-        <div class="cardContainer">
-          <n-card
-            v-for="item in playList"
-            :key="item.id"
-            :title="item.name"
-            :hoverable="true"
-            :bordered="false"
-            @click="
-              () => {
-                $router.push({
-                  path: '/playListDetail',
-                  query: { id: item.id },
-                });
-              }
-            "
-          >
-            <template #cover>
-              <img :src="item.coverImgUrl" />
-            </template>
-          </n-card>
-        </div>
+        <NGrid :cols="5" :x-gap="45" class="cardContainer"
+          ><n-gi v-for="item in playList" :key="item.id">
+            <n-card
+              :title="item.name"
+              :hoverable="true"
+              :bordered="false"
+              @click="
+                () => {
+                  $router.push({
+                    path: '/playListDetail',
+                    query: { id: item.id },
+                  });
+                }
+              "
+            >
+              <template #cover>
+                <img :src="item.coverImgUrl" />
+              </template>
+            </n-card> </n-gi
+        ></NGrid>
       </n-tab-pane>
     </n-tabs>
+    <div class="titleDiv">新歌速递</div>
+    <NGrid :cols="5" :x-gap="45"
+      ><n-gi v-for="item in typeList" :key="item.id"
+        ><NewSong :type="item"></NewSong></n-gi
+    ></NGrid>
   </div>
 </template>
 <script lang="ts" setup>
-import { NCarousel, NTabs, NTabPane, NCard } from "naive-ui";
+import { NCarousel, NTabs, NTabPane, NCard, NGrid, NGi } from "naive-ui";
 import { getHotList, getPlayList } from "../../api/Recommend";
 import { Hotlist, Playlists } from "../../type/Recommend";
 import { ref } from "vue";
 import SecMenuBar from "../../components/SecMenuBar.vue";
+import NewSong from "../../components/NewSong.vue";
 
 const hotTypeList = ref<Array<Hotlist>>([]);
 const playList = ref<Array<Playlists>>([]);
 const currentTab = ref<string>("华语");
+const typeList = [
+  {
+    id: 0,
+    name: "全部",
+  },
+  {
+    id: 7,
+    name: "华语",
+  },
+  {
+    id: 96,
+    name: "欧美",
+  },
+  {
+    id: 8,
+    name: "日本",
+  },
+  {
+    id: 16,
+    name: "韩国",
+  },
+];
 const getHotTypeList = () => {
   getHotList().then((res) => {
     hotTypeList.value = res.data.tags;
@@ -63,7 +90,7 @@ const getHotTypeList = () => {
 
 const getPlay = () => {
   getPlayList(currentTab.value).then((res) => {
-    playList.value = res.data.playlists;
+    playList.value = res.data.playlists.splice(0,5);
   });
 };
 
@@ -79,32 +106,26 @@ init();
 </script>
 <style lang="less" scoped>
 .recommend {
-  width: 90vw;
-  padding: 0 4vw 0 4vw;
+  width: 80vw;
+  padding: 0 9vw 0 9vw;
 }
 /deep/.n-tabs .n-tabs-tab .n-tabs-tab__label {
   font-size: 15px;
 }
+
 .cardContainer {
-  width: 90vw;
-  overflow-x: auto;
-  display: -webkit-box;
-  .n-card {
-    height: 380px;
-    width: 280px;
-    margin: 0px 10px 0px 10px;
+  /deep/.n-card > .n-card-header {
+    font-size: 16px;
+    text-align: left;
   }
-  img {
-    height: 250px;
-    width: 250px;
-    margin: 5% 0 0 5%;
-  }
+
 }
 .titleDiv {
   font-size: 26px;
   font-weight: 600;
   float: left;
   margin-top: 50px;
+  margin-bottom: 20px;
 }
 .carousel-img {
   width: 100%;
@@ -113,22 +134,21 @@ init();
 }
 
 /*滚动条高宽度*/
-.cardContainer::-webkit-scrollbar{
-    height:  8px;
+.cardContainer::-webkit-scrollbar {
+  height: 8px;
 }
 /*滚动条滑块*/
-.cardContainer::-webkit-scrollbar-thumb{
-    border-radius: 3px;
-    box-shadow: inset 0 0 5px rgba(162, 81, 225, 0.2);
-    background: #dfdfdf;
+.cardContainer::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  box-shadow: inset 0 0 5px rgba(162, 81, 225, 0.2);
+  background: #dfdfdf;
 }
 /*滚动条里面轨道*/
 .cardContainer ::-webkit-scrollbar-track {
-    box-shadow: 1px 1px 5px rgba(162, 81, 225, 0.2) inset;
- 
+  box-shadow: 1px 1px 5px rgba(162, 81, 225, 0.2) inset;
 }
 /*滚动条的小边角*/
 .cardContainer::-webkit-scrollbar-corner {
-    background: transparent;
+  background: transparent;
 }
 </style>

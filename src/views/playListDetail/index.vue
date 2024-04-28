@@ -268,7 +268,7 @@ getPlayDetail();
 
 <style lang="less" scoped>
 .playListDetail {
-  padding: 5vh 5vw 0 5vw;
+  padding: 5vh 10vw 0 10vw;
 
   .introductionTitle {
     font-size: 25px;

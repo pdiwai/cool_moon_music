@@ -20,7 +20,7 @@
 
     <a
       v-if="!isLogin"
-      style="width: 200px; margin-right: 5%"
+      style="width: 200px; margin-right: 8vw"
       @click="show = true"
       >登录/注册</a
     >
@@ -28,7 +28,7 @@
       v-else
       :src="avatarUrl"
       width="40"
-      style="border-radius: 50%; margin-right: 5%"
+      style="border-radius: 50%; margin-right: 8vw"
     />
 
     <n-modal
@@ -127,12 +127,14 @@ const closeModal = () => {
   max-width: 100vw;
   border-bottom: 1px solid #ededed;
   height: 66px;
+  // margin-left: 10vw;
 }
 /deep/.n-menu {
-  font-size: 19px !important;
-  .n-menu-item-content {
-    margin-left: 20%;
-  }
+  font-size: 16px;
+  margin-left: 8vw;
+  // .n-menu-item-content {
+  //   margin-left: 20%;
+  // }
 }
 
 /deep/.n-menu.n-menu--horizontal
@@ -141,7 +143,7 @@ const closeModal = () => {
   margin-top: -5px;
   a {
     font-weight: 600;
-    font-size: 28px;
+    font-size: 27px;
   }
 }
 </style>
