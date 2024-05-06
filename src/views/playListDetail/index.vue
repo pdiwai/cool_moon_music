@@ -167,18 +167,11 @@ import {
   PlayCircleOutline,
 } from "@vicons/ionicons5";
 import Player from "../../components/Player.vue";
+import { SongInfo } from "../../type/currency";
 
 const { currentRoute } = useRouter();
 const musicList = ref<Array<Tracks>>([]);
-const currentSong = ref<{
-  index: number;
-  name: string;
-  nickname: string;
-  songUrl: string;
-  picUrl: string;
-  alName: string;
-  id: number;
-}>({
+const currentSong = ref<SongInfo>({
   index: undefined as any,
   name: "",
   nickname: "",

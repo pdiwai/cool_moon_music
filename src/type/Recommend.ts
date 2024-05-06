@@ -2,7 +2,7 @@ export interface Hotlist {
   activity: boolean;
   category: number;
   createTime: number;
-  hot: true;
+  hot: boolean;
   id: number;
   name: string;
   playlistTag: PlaylistTag;
@@ -219,4 +219,136 @@ export interface AR {
 export interface VideoInfo {
   moreThanOne: boolean;
   video: string;
+}
+
+export interface TopSongVo {
+  starred: boolean;
+  popularity: number;
+  starredNum: number;
+  playedNum: number;
+  dayPlays: number;
+  hearTime: number;
+  mp3Url: string;
+  privilege: Privilege;
+  st: number;
+  exclusive: boolean;
+  score: number;
+  album: Album;
+  mvid: number;
+  hMusic: Music;
+  mMusic: Music;
+  lMusic: Music;
+  artists: Array<Artists>;
+  alias: Array<string>;
+  commentThreadId: string;
+  fee: number;
+  copyFrom: string;
+  disc: string;
+  no: number;
+  ringtone: string;
+  rtype: number;
+  copyrightId: number;
+  bMusic: Music;
+  ftype: number;
+  position: number;
+  duration: number;
+  status: number;
+  name: string;
+  id: number;
+}
+
+export interface Music {
+  sr: number;
+  volumeDelta: number;
+  playTime: number;
+  bitrate: number;
+  dfsId: number;
+  name: string;
+  id: number;
+  size: number;
+  extension: string;
+}
+
+export interface Artists {
+  img1v1Id: number;
+  topicPerson: number;
+  img1v1Url: string;
+  trans: string;
+  followed: boolean;
+  picId: number;
+  picUrl: string;
+  briefDesc: string;
+  albumSize: number;
+  musicSize: number;
+  name: string;
+  id: number;
+  img1v1Id_str: string;
+}
+
+export interface FreeTrialPrivilege {
+  resConsumable: boolean;
+  userConsumable: boolean;
+  listenType: number;
+  cannotListenReason: number;
+}
+export interface ChargeInfoList {
+  rate: number;
+  chargeUrl: string;
+  chargeMessage: string;
+  chargeType: number;
+}
+
+export interface Privilege {
+  id: number;
+  fee: number;
+  payed: number;
+  st: number;
+  pl: number;
+  dl: number;
+  sp: number;
+  cp: number;
+  subp: number;
+  cs: boolean;
+  maxbr: number;
+  fl: number;
+  toast: boolean;
+  flag: number;
+  preSell: boolean;
+  playMaxbr: number;
+  downloadMaxbr: number;
+  maxBrLevel: string;
+  playMaxBrLevel: string;
+  downloadMaxBrLevel: string;
+  plLevel: string;
+  dlLevel: string;
+  flLevel: string;
+  freeTrialPrivilege: FreeTrialPrivilege;
+  rightSource: number;
+  chargeInfoList: Array<ChargeInfoList>;
+}
+
+export interface Album {
+  paid: boolean;
+  onSale: boolean;
+  blurPicUrl: string;
+  companyId: number;
+  picId: number;
+  picUrl: string;
+  artists: Array<Artists>;
+  publishTime: number;
+  commentThreadId: string;
+  briefDesc: string;
+  artist: Artists;
+  company: string;
+  copyrightId: number;
+  subType: string;
+  pic: number;
+  status: number;
+  description: string;
+  tags: string;
+  name: string;
+  id: number;
+  type: string;
+  size: number;
+  picId_str: string;
 }

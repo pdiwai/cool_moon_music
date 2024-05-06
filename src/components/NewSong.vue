@@ -6,14 +6,30 @@
         content: true,
         footer: 'soft',
       }"
+      style="background: url(songInfoList[0].picUrl)"
     >
-      卡片内容
+      <n-list>
+        <n-list-item
+          v-for="(item, index) in songInfoList"
+          :key="item.id"
+          style="text-align: left"
+        >
+          <a style="color: black"
+            ><b style="margin-right: 10px">{{ index + 1 }}</b
+            >{{ item.name }}</a
+          >
+        </n-list-item>
+      </n-list>
     </n-card>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { NCard } from "naive-ui";
+import { NCard, NList, NListItem } from "naive-ui";
+import { getTopSongList } from "../api/Recommend";
+import { ref } from "vue";
+import { SongInfo } from "../type/currency";
+import { TopSongVo } from "../type/Recommend";
 
 const props = defineProps({
   type: {
@@ -21,6 +37,27 @@ const props = defineProps({
     type: Object,
   },
 });
+
+const songInfoList = ref<Array<SongInfo>>([]);
+
+const getNewSongList = () => {
+  getTopSongList(props.type.id).then((res) => {
+    const tempValue = res.data.data.splice(0, 5) as Array<TopSongVo>;
+    tempValue.forEach((item) => {
+      const tempVo = {
+        index: item.no,
+        name: item.album.name,
+        nickname: item.artists[0].name,
+        songUrl: item.mp3Url,
+        picUrl: item.album.picUrl,
+        alName: item.alias[0],
+        id: item.album.id,
+      };
+      songInfoList.value.push(tempVo);
+    });
+  });
+};
+getNewSongList();
 </script>
 
 <style lang="less" scoped>
