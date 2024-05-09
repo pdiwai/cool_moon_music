@@ -63,11 +63,19 @@ getNewSongList();
 <style lang="less" scoped>
 .n-card {
   /deep/.n-card-header {
-    background-color: #282828;
     height: 118px;
+    background-image: linear-gradient(
+        to bottom,
+        rgba(46, 32, 60, 0.7),
+        rgba(46, 32, 60, 0.7),
+      ),
+      url(../assets/background.png);
+    background-position: center center;
     .n-card-header__main {
       color: rgb(255 255 255);
     }
+    font-size: 30px;
+    font-weight: 1000;
   }
 }
 </style>
