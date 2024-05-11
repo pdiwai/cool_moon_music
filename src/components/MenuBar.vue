@@ -142,7 +142,7 @@ const handleSelect = (key: string) => {
 .firstMenu {
   display: flex;
   align-items: center;
-  max-width: 100vw;
+  width: 100vw;
   border-bottom: 1px solid #ededed;
   height: 66px;
   // margin-left: 10vw;
