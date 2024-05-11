@@ -15,7 +15,17 @@
         >
           <n-tooltip trigger="hover">
             <template #trigger>
-              <a style="color: black" href="#" @click.prevent="clickMusic()"
+              <a
+                style="color: black"
+                href="#"
+                @click.prevent="
+                  () => {
+                    $router.push({
+                      path: '/playerPage',
+                      query: { songInfo: JSON.stringify(item) },
+                    });
+                  }
+                "
                 ><b style="margin-right: 10px">{{ index + 1 }}</b
                 >{{
                   item.name.length > 18
@@ -70,7 +80,6 @@ const getNewSongList = () => {
   });
 };
 
-const clickMusic = () => {};
 getNewSongList();
 </script>
 

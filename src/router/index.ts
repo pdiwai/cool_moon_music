@@ -14,6 +14,10 @@ const routes = [
     path: "/playListDetail",
     component: () => import("../views/playListDetail/index.vue"),
   },
+  {
+    path: "/playerPage",
+    component: () => import("../views/playerPage/index.vue"),
+  },
 ];
 
 // 实例化路由对象，使用hash模式

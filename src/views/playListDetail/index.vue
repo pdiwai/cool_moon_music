@@ -2,9 +2,12 @@
   <div class="playListDetail">
     <n-grid x-gap="80" :cols="4">
       <n-gi>
-        <img :src="neededInfo.coverImgUrl" style="height: 40vh; width: 20vw" />
+        <img
+          :src="neededInfo.coverImgUrl"
+          style="height: 320px; width: 320px"
+        />
         <div class="introductionTitle">歌单简介</div>
-        <div style="font-size: 15px; text-align: left">
+        <div style="font-size: 15px; text-align: left;width: 320px;">
           {{ neededInfo.description }}
         </div>
         <n-button
@@ -18,7 +21,10 @@
           <n-icon size="25"> <DownloadOutline /> </n-icon>&nbsp;下载该歌单
         </n-button>
         <hr />
-        <img src="../../assets/qrcode.jpg" style="height: 26vh; width: 13vw" />
+        <img
+          src="../../assets/qrcode.jpg"
+          style="height: 200px; width: 200px"
+        />
         <div style="color: gray">手机扫描二维码关注公众号</div>
       </n-gi>
       <n-gi span="3">
@@ -261,7 +267,7 @@ getPlayDetail();
 
 <style lang="less" scoped>
 .playListDetail {
-  padding: 5vh 10vw 0 10vw;
+  padding:40px 10vw 0 10vw;
 
   .introductionTitle {
     font-size: 25px;
@@ -277,13 +283,13 @@ getPlayDetail();
   .downloadList {
     margin-top: 20px;
     margin-bottom: 20px;
-    min-width: 15vw;
-    min-height: 5vh;
+    min-width: 150px;
+    min-height: 50px;
   }
 
   hr {
     border-color: rgb(255, 255, 255);
-    width: 20vw;
+    width: 350px;
   }
 }
 </style>
