@@ -54,6 +54,11 @@ button:hover {
   padding: 2em;
 }
 
+.smallGrayText {
+  color: #9c9c9c;
+  font-size: smaller;
+}
+
 #app {
   max-width: 1280px;
   /* padding: 2rem; */

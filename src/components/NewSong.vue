@@ -6,7 +6,6 @@
         content: true,
         footer: 'soft',
       }"
-      style="background: url(songInfoList[0].picUrl)"
     >
       <n-list>
         <n-list-item
@@ -14,10 +13,23 @@
           :key="item.id"
           style="text-align: left"
         >
-          <a style="color: black"
-            ><b style="margin-right: 10px">{{ index + 1 }}</b
-            >{{ item.name }}</a
-          >
+          <n-tooltip trigger="hover">
+            <template #trigger>
+              <a style="color: black" href="#" @click.prevent="clickMusic()"
+                ><b style="margin-right: 10px">{{ index + 1 }}</b
+                >{{
+                  item.name.length > 18
+                    ? item.name.slice(0, 17) + "..."
+                    : item.name
+                }}</a
+              >
+            </template>
+            {{ item.name }}
+          </n-tooltip>
+
+          <div class="smallGrayText" style="margin-left: 18px">
+            {{ item.nickname }}
+          </div>
         </n-list-item>
       </n-list>
     </n-card>
@@ -25,7 +37,7 @@
 </template>
 
 <script lang="ts" setup>
-import { NCard, NList, NListItem } from "naive-ui";
+import { NCard, NList, NListItem, NTooltip } from "naive-ui";
 import { getTopSongList } from "../api/Recommend";
 import { ref } from "vue";
 import { SongInfo } from "../type/currency";
@@ -57,6 +69,8 @@ const getNewSongList = () => {
     });
   });
 };
+
+const clickMusic = () => {};
 getNewSongList();
 </script>
 
@@ -67,7 +81,7 @@ getNewSongList();
     background-image: linear-gradient(
         to bottom,
         rgba(46, 32, 60, 0.7),
-        rgba(46, 32, 60, 0.7),
+        rgba(46, 32, 60, 0.7)
       ),
       url(../assets/background.png);
     background-position: center center;

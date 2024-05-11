@@ -274,11 +274,6 @@ getPlayDetail();
     color: #ad0404;
     border: #ad0404 0.5px solid;
   }
-  .smallGrayText {
-    color: #9c9c9c;
-    font-size: smaller;
-  }
-
   .downloadList {
     margin-top: 20px;
     margin-bottom: 20px;
