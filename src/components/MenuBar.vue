@@ -11,24 +11,16 @@
       v-model:value="value"
       type="text"
       placeholder="搜索音乐/MV/歌单/歌手"
-      style="width: 450px; margin-right: 20px"
+      style="width: 500px; margin-right: 30px"
     >
       <template #prefix>
         <n-icon :component="Search" />
       </template>
     </n-input>
 
-    <a
-      v-if="!isLogin"
-      style="width: 200px; margin-right: 8vw"
-      @click="show = true"
-      >登录/注册</a
-    >
+    <a v-if="!isLogin" style="width: 300px" @click="show = true">登录/注册</a>
     <NDropdown v-else trigger="click" :options="options" @select="handleSelect">
-      <img
-        :src="avatarUrl"
-        width="40"
-        style="border-radius: 50%; margin-right: 8vw"
+      <img :src="avatarUrl" width="40" style="border-radius: 50%"
     /></NDropdown>
 
     <n-modal
@@ -142,12 +134,15 @@ const handleSelect = (key: string) => {
 .firstMenu {
   display: flex;
   align-items: center;
-  width: 100vw;
+  margin: 0 auto;
+  padding: 0 120px;
   border-bottom: 1px solid #ededed;
   height: 66px;
-  // margin-left: 10vw;
+  justify-content: space-between;
 }
 /deep/.n-menu {
+  max-width: 1640px;
+  min-width: 1180px;
   font-size: 16px;
   margin-left: 8vw;
   // .n-menu-item-content {

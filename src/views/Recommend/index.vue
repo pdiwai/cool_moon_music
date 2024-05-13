@@ -90,7 +90,7 @@ const getHotTypeList = () => {
 
 const getPlay = () => {
   getPlayList(currentTab.value).then((res) => {
-    playList.value = res.data.playlists.splice(0,5);
+    playList.value = res.data.playlists.splice(0, 5);
   });
 };
 
@@ -106,8 +106,10 @@ init();
 </script>
 <style lang="less" scoped>
 .recommend {
-  width: 80vw;
-  padding: 0 9vw 0 9vw;
+  margin: 0 auto;
+  max-width: 1640px;
+  min-width: 1180px;
+  padding: 0 120px;
 }
 /deep/.n-tabs .n-tabs-tab .n-tabs-tab__label {
   font-size: 15px;
@@ -118,7 +120,6 @@ init();
     font-size: 16px;
     text-align: left;
   }
-
 }
 .titleDiv {
   font-size: 26px;

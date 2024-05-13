@@ -1,5 +1,5 @@
 <template>
-  <div style="position: absolute; top: 0; left: 0">
+  <div style="width: 98vw;">
     <n-message-provider><MenuBar></MenuBar></n-message-provider>
     <router-view></router-view>
   </div>

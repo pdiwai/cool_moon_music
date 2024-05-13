@@ -324,7 +324,8 @@ audio {
 }
 
 .audioDiv {
-  width: 80vw;
+  width: 90vw;
+  margin-left: 5vw;
   height: 95%;
   z-index: 100;
   position: fixed;

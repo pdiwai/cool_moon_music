@@ -41,7 +41,7 @@ const menuOptions: MenuOption[] = [
 .recommendDiv {
   /deep/.n-menu {
     font-size: 16px !important;
-    padding: 10px 120px;
+    padding: 10px 206px;
   }
 }
 </style>
