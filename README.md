@@ -10,3 +10,8 @@
   ![alt text](./src/assets/palyer.png)
 - 查看歌词（封面动画、当前歌词高亮显示、歌词滚动）
   ![alt text](./src/assets/lyric.png)
+- 新歌速递
+  ![alt text](./src/assets/newSong.png)
+- 音乐详情（歌词、评论显示）
+  ![alt text](./src/assets/musicDetail.png)
+
