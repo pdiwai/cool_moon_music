@@ -26,12 +26,11 @@
                     });
                   }
                 "
-                ><b style="margin-right: 10px">{{ index + 1 }}</b
-                >{{
-                  item.name.length > 18
-                    ? item.name.slice(0, 17) + "..."
-                    : item.name
-                }}</a
+              >
+                <n-ellipsis style="width: 170px">
+                  <b style="margin-right: 10px">{{ index + 1 }}</b
+                  >{{ item.name }}</n-ellipsis
+                ></a
               >
             </template>
             {{ item.name }}
@@ -47,7 +46,7 @@
 </template>
 
 <script lang="ts" setup>
-import { NCard, NList, NListItem, NTooltip } from "naive-ui";
+import { NCard, NList, NListItem, NTooltip, NEllipsis } from "naive-ui";
 import { getTopSongList } from "../api/Recommend";
 import { ref } from "vue";
 import { SongInfo } from "../type/currency";
