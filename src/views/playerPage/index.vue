@@ -88,6 +88,11 @@
             <p style="color: gray">{{ item.timeStr }}</p>
           </n-list-item>
         </n-list>
+        <n-pagination
+          v-model:page="paginationInfo.currentPage"
+          :page-count="paginationInfo.totalPage"
+          :on-update:page="changePage"
+        />
       </div>
     </div>
 
@@ -98,7 +103,7 @@
 <script lang="ts" setup>
 import { useRouter } from "vue-router";
 import { ref } from "vue";
-import { NButton, NIcon, NList, NListItem } from "naive-ui";
+import { NButton, NIcon, NList, NListItem, NPagination } from "naive-ui";
 import {
   CaretForwardCircleOutline,
   AddSharp,
@@ -132,6 +137,10 @@ const uncollectedLyric = ref<boolean>(false);
 const lyricList = ref<Array<{ time: string; lyric: string }>>([]);
 const lineNo = ref<number>(-1);
 const loading = ref<boolean>(false);
+const paginationInfo = ref({
+  currentPage: 1,
+  totalPage: 0,
+});
 
 const getLyrucInfo = () => {
   loading.value = true;
@@ -157,15 +166,21 @@ const getLyrucInfo = () => {
     });
 };
 
-const getMusicComment = () => {
-  getComment(currentSong.value.id).then((res) => {
+const getMusicComment = (offset: number) => {
+  getComment(currentSong.value.id, offset as number).then((res) => {
     userComments.value = res.data.comments;
     commentNumber.value = res.data.total;
+    paginationInfo.value.totalPage = Math.ceil(res.data.total / 5);
   });
 };
 
+const changePage = (page: number) => {
+  paginationInfo.value.currentPage = page;
+  getMusicComment((page - 1) * 5);
+};
+
 getLyrucInfo();
-getMusicComment();
+getMusicComment(0);
 </script>
 
 <style lang="less" scoped>
