@@ -184,7 +184,6 @@ watch(
   transition: 0.2s;
 }
 
-
 /*滚动条高宽度*/
 .container::-webkit-scrollbar{
     width: 5px;

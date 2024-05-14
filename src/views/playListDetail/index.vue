@@ -21,7 +21,7 @@
       <div style="color: gray">手机扫描二维码关注公众号</div>
     </div>
     <div class="divRight">
-      <div style="font-size: 30px; font-weight: 600; text-align: left">
+      <div class="listName">
         {{ neededInfo.name }}
       </div>
       <div
@@ -186,14 +186,16 @@ const neededInfo = ref<{
   nickname: "",
 });
 const getPlayDetail = () => {
-  getPlayListDetail(currentRoute.value.query.id as string).then((res) => {
-    musicList.value = res.data.playlist.tracks;
-    neededInfo.value.coverImgUrl = res.data.playlist.coverImgUrl;
-    neededInfo.value.name = res.data.playlist.name;
-    neededInfo.value.description = res.data.playlist.description;
-    neededInfo.value.identityIconUrl = res.data.playlist.creator.avatarUrl;
-    neededInfo.value.nickname = res.data.playlist.creator.nickname;
-  });
+  getPlayListDetail(Number(currentRoute.value.query.id as string)).then(
+    (res) => {
+      musicList.value = res.data.playlist.tracks;
+      neededInfo.value.coverImgUrl = res.data.playlist.coverImgUrl;
+      neededInfo.value.name = res.data.playlist.name;
+      neededInfo.value.description = res.data.playlist.description;
+      neededInfo.value.identityIconUrl = res.data.playlist.creator.avatarUrl;
+      neededInfo.value.nickname = res.data.playlist.creator.nickname;
+    }
+  );
 };
 
 const clickMusic = async (id: number, index: number) => {
@@ -265,6 +267,11 @@ getPlayDetail();
   .divRight {
     margin-top: 63px;
     width: 70%;
+  }
+  .listName {
+    font-size: 30px;
+    font-weight: 600;
+    text-align: left;
   }
   .introductionTitle {
     font-size: 25px;

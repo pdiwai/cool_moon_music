@@ -16,7 +16,7 @@
       </n-button>
     </div>
     <div class="divRight">
-      <div style="font-size: 30px; font-weight: 600; text-align: left">
+      <div class="musicName">
         {{ currentSong.name }}
       </div>
       <div
@@ -56,8 +56,7 @@
         </p>
         <ul
           v-if="!loading && lyricList.length > 0"
-          style="list-style-type: none"
-          class="lyricRow"
+          style="list-style-type: none; margin-left: -35px"
         >
           <li
             v-for="(item, index) in lyricList"
@@ -69,7 +68,29 @@
           </li>
         </ul>
       </div>
+      <div class="comment">
+        <span
+          >最新评论 <a>{{ commentNumber }}条</a></span
+        >
+        <n-list>
+          <n-list-item v-for="item in userComments" :key="item.commentId">
+            <template #prefix>
+              <img
+                :src="item.user.avatarUrl"
+                height="42"
+                style="border-radius: 50%"
+              />
+            </template>
+            <b style="font-size: 14px; height: 22px; line-height: 22px">{{
+              item.user.nickname
+            }}</b>
+            <p>{{ item.content }}</p>
+            <p style="color: gray">{{ item.timeStr }}</p>
+          </n-list-item>
+        </n-list>
+      </div>
     </div>
+
     <div style="height: 100px"></div>
   </div>
 </template>
@@ -77,7 +98,7 @@
 <script lang="ts" setup>
 import { useRouter } from "vue-router";
 import { ref } from "vue";
-import { NButton, NIcon } from "naive-ui";
+import { NButton, NIcon, NList, NListItem } from "naive-ui";
 import {
   CaretForwardCircleOutline,
   AddSharp,
@@ -88,6 +109,8 @@ import {
 } from "@vicons/ionicons5";
 import { SongInfo } from "../../type/currency";
 import { getLyric } from "../../api/playListDetail";
+import { getComment } from "../../api/playerPage";
+import { Comment } from "../../type/playerPage";
 
 const { currentRoute } = useRouter();
 const currentSong = ref<SongInfo>({
@@ -99,6 +122,9 @@ const currentSong = ref<SongInfo>({
   alName: "",
   id: 0,
 });
+
+const userComments = ref<Array<Comment>>([]);
+const commentNumber = ref<number>();
 if (currentRoute.value.query.songInfo !== null) {
   currentSong.value = JSON.parse(currentRoute.value.query.songInfo as string);
 }
@@ -131,7 +157,15 @@ const getLyrucInfo = () => {
     });
 };
 
+const getMusicComment = () => {
+  getComment(currentSong.value.id).then((res) => {
+    userComments.value = res.data.comments;
+    commentNumber.value = res.data.total;
+  });
+};
+
 getLyrucInfo();
+getMusicComment();
 </script>
 
 <style lang="less" scoped>
@@ -150,6 +184,12 @@ getLyrucInfo();
   .divRight {
     margin-top: 63px;
     width: 70%;
+  }
+
+  .musicName {
+    font-size: 30px;
+    font-weight: 600;
+    text-align: left;
   }
 
   .introductionTitle {
@@ -171,11 +211,48 @@ getLyrucInfo();
     min-height: 50px;
   }
   .lyric {
-    height: 65vh;
+    max-height: 600px;
     font-size: 14px;
     color: #858585;
     margin-top: 30px;
     text-align: left;
+    overflow: auto;
+  }
+
+  /*滚动条高宽度*/
+  .lyric::-webkit-scrollbar {
+    width: 5px;
+  }
+  /*滚动条滑块*/
+  .lyric::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    box-shadow: inset 0 0 5px rgba(162, 81, 225, 0.2);
+    background: #dfdfdf;
+  }
+  /*滚动条里面轨道*/
+  .lyric ::-webkit-scrollbar-track {
+    box-shadow: 1px 1px 5px rgba(162, 81, 225, 0.2) inset;
+  }
+  /*滚动条的小边角*/
+  .lyric::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  .comment {
+    margin-top: 48px;
+    text-align: left;
+    span {
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 30px;
+      margin-bottom: 22px;
+    }
+    span > a {
+      color: gray;
+      font-size: 14px;
+      font-weight: 300;
+      margin-left: 8px;
+    }
   }
 }
 </style>
