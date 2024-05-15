@@ -89,6 +89,7 @@
           </n-list-item>
         </n-list>
         <n-pagination
+          v-if="commentNumber > 0"
           v-model:page="paginationInfo.currentPage"
           :page-count="paginationInfo.totalPage"
           :on-update:page="changePage"

@@ -135,7 +135,6 @@ const handleSelect = (key: string) => {
   display: flex;
   align-items: center;
   margin: 0 auto;
-  padding: 0 120px;
   border-bottom: 1px solid #ededed;
   height: 66px;
   justify-content: space-between;
@@ -144,7 +143,7 @@ const handleSelect = (key: string) => {
   max-width: 1640px;
   min-width: 1180px;
   font-size: 16px;
-  margin-left: 8vw;
+  margin-left: 100px;
   // .n-menu-item-content {
   //   margin-left: 20%;
   // }
